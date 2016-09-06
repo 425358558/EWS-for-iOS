@@ -31,14 +31,14 @@ static EWSManager *instance = nil;
     return instance;
 }
 
--(void)setEmailBoxInfoEmailAddress:(NSString *)emailAddress password:(NSString *)password description:(NSString *)description mailServerAddress:(NSString *)mailServerAddress domain:(NSString *)domain{
-    ewsEmailBoxModel = [[EWSEmailBoxModel alloc] init];
-    ewsEmailBoxModel.emailAddress = emailAddress;
-    ewsEmailBoxModel.password = password;
-    ewsEmailBoxModel.description = description;
-    ewsEmailBoxModel.mailServerAddress = mailServerAddress;
-    ewsEmailBoxModel.domain = domain;
-}
+//-(void)setEmailBoxInfoEmailAddress:(NSString *)emailAddress password:(NSString *)password description:(NSString *)description mailServerAddress:(NSString *)mailServerAddress domain:(NSString *)domain{
+//    ewsEmailBoxModel = [[EWSEmailBoxModel alloc] init];
+//    ewsEmailBoxModel.emailAddress = emailAddress;
+//    ewsEmailBoxModel.password = password;
+//    ewsEmailBoxModel.description = description;
+//    ewsEmailBoxModel.mailServerAddress = mailServerAddress;
+//    ewsEmailBoxModel.domain = domain;
+//}
 
 -(void)autodiscover{
     if (ewsEmailBoxModel) {
