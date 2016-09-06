@@ -1,0 +1,398 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		44394CCD1D6550C600C5A9E2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 44394CCC1D6550C600C5A9E2 /* main.m */; };
+		44394CD01D6550C600C5A9E2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 44394CCF1D6550C600C5A9E2 /* AppDelegate.m */; };
+		44394CD31D6550C600C5A9E2 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44394CD21D6550C600C5A9E2 /* ViewController.m */; };
+		44394CD61D6550C600C5A9E2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 44394CD41D6550C600C5A9E2 /* Main.storyboard */; };
+		44394CD81D6550C600C5A9E2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 44394CD71D6550C600C5A9E2 /* Assets.xcassets */; };
+		44394CDB1D6550C600C5A9E2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 44394CD91D6550C600C5A9E2 /* LaunchScreen.storyboard */; };
+		44394CE51D6556E600C5A9E2 /* EWSManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 44394CE41D6556E600C5A9E2 /* EWSManager.m */; };
+		44394CE81D65607F00C5A9E2 /* EWSAutodiscover.m in Sources */ = {isa = PBXBuildFile; fileRef = 44394CE71D65607F00C5A9E2 /* EWSAutodiscover.m */; };
+		44394CEF1D6562E000C5A9E2 /* EWSEmailBoxModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 44394CEE1D6562E000C5A9E2 /* EWSEmailBoxModel.m */; };
+		44394CF21D659B7C00C5A9E2 /* EWSXmlParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 44394CF11D659B7C00C5A9E2 /* EWSXmlParser.m */; };
+		44394CF51D659B9C00C5A9E2 /* EWSHttpRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 44394CF41D659B9C00C5A9E2 /* EWSHttpRequest.m */; };
+		44410AF61D73C96100B5B2EE /* EWSInboxList.m in Sources */ = {isa = PBXBuildFile; fileRef = 44410AF51D73C96100B5B2EE /* EWSInboxList.m */; };
+		445077A51D753199004A9B38 /* EWSInboxListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 445077A41D753199004A9B38 /* EWSInboxListModel.m */; };
+		445077A81D753537004A9B38 /* EWSItemContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 445077A71D753537004A9B38 /* EWSItemContent.m */; };
+		445077AB1D753599004A9B38 /* EWSItemContentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 445077AA1D753599004A9B38 /* EWSItemContentModel.m */; };
+		445077AE1D75360F004A9B38 /* EWSMailAccountModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 445077AD1D75360F004A9B38 /* EWSMailAccountModel.m */; };
+		445077B11D753668004A9B38 /* EWSMailAttachmentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 445077B01D753668004A9B38 /* EWSMailAttachmentModel.m */; };
+		445077B41D757839004A9B38 /* EWSMailAttachment.m in Sources */ = {isa = PBXBuildFile; fileRef = 445077B31D757839004A9B38 /* EWSMailAttachment.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		44394CC81D6550C500C5A9E2 /* EWS-For-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "EWS-For-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		44394CCC1D6550C600C5A9E2 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		44394CCE1D6550C600C5A9E2 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		44394CCF1D6550C600C5A9E2 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		44394CD11D6550C600C5A9E2 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		44394CD21D6550C600C5A9E2 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		44394CD51D6550C600C5A9E2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		44394CD71D6550C600C5A9E2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		44394CDA1D6550C600C5A9E2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		44394CDC1D6550C600C5A9E2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		44394CE31D6556E600C5A9E2 /* EWSManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EWSManager.h; path = EWSManager/EWSManager.h; sourceTree = "<group>"; };
+		44394CE41D6556E600C5A9E2 /* EWSManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EWSManager.m; path = EWSManager/EWSManager.m; sourceTree = "<group>"; };
+		44394CE61D65607F00C5A9E2 /* EWSAutodiscover.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EWSAutodiscover.h; path = EWSManager/EWSAutodiscover.h; sourceTree = "<group>"; };
+		44394CE71D65607F00C5A9E2 /* EWSAutodiscover.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EWSAutodiscover.m; path = EWSManager/EWSAutodiscover.m; sourceTree = "<group>"; };
+		44394CED1D6562E000C5A9E2 /* EWSEmailBoxModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EWSEmailBoxModel.h; path = EWSModel/EWSEmailBoxModel.h; sourceTree = "<group>"; };
+		44394CEE1D6562E000C5A9E2 /* EWSEmailBoxModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EWSEmailBoxModel.m; path = EWSModel/EWSEmailBoxModel.m; sourceTree = "<group>"; };
+		44394CF01D659B7C00C5A9E2 /* EWSXmlParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EWSXmlParser.h; path = EWSManager/EWSXmlParser.h; sourceTree = "<group>"; };
+		44394CF11D659B7C00C5A9E2 /* EWSXmlParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EWSXmlParser.m; path = EWSManager/EWSXmlParser.m; sourceTree = "<group>"; };
+		44394CF31D659B9C00C5A9E2 /* EWSHttpRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EWSHttpRequest.h; path = EWSManager/EWSHttpRequest.h; sourceTree = "<group>"; };
+		44394CF41D659B9C00C5A9E2 /* EWSHttpRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EWSHttpRequest.m; path = EWSManager/EWSHttpRequest.m; sourceTree = "<group>"; };
+		44410AF41D73C96100B5B2EE /* EWSInboxList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EWSInboxList.h; path = EWSManager/EWSInboxList.h; sourceTree = "<group>"; };
+		44410AF51D73C96100B5B2EE /* EWSInboxList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EWSInboxList.m; path = EWSManager/EWSInboxList.m; sourceTree = "<group>"; };
+		445077A31D753199004A9B38 /* EWSInboxListModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EWSInboxListModel.h; path = EWSModel/EWSInboxListModel.h; sourceTree = "<group>"; };
+		445077A41D753199004A9B38 /* EWSInboxListModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EWSInboxListModel.m; path = EWSModel/EWSInboxListModel.m; sourceTree = "<group>"; };
+		445077A61D753537004A9B38 /* EWSItemContent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EWSItemContent.h; path = EWSManager/EWSItemContent.h; sourceTree = "<group>"; };
+		445077A71D753537004A9B38 /* EWSItemContent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EWSItemContent.m; path = EWSManager/EWSItemContent.m; sourceTree = "<group>"; };
+		445077A91D753599004A9B38 /* EWSItemContentModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EWSItemContentModel.h; path = EWSModel/EWSItemContentModel.h; sourceTree = "<group>"; };
+		445077AA1D753599004A9B38 /* EWSItemContentModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EWSItemContentModel.m; path = EWSModel/EWSItemContentModel.m; sourceTree = "<group>"; };
+		445077AC1D75360F004A9B38 /* EWSMailAccountModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EWSMailAccountModel.h; path = EWSModel/EWSMailAccountModel.h; sourceTree = "<group>"; };
+		445077AD1D75360F004A9B38 /* EWSMailAccountModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EWSMailAccountModel.m; path = EWSModel/EWSMailAccountModel.m; sourceTree = "<group>"; };
+		445077AF1D753668004A9B38 /* EWSMailAttachmentModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EWSMailAttachmentModel.h; path = EWSModel/EWSMailAttachmentModel.h; sourceTree = "<group>"; };
+		445077B01D753668004A9B38 /* EWSMailAttachmentModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EWSMailAttachmentModel.m; path = EWSModel/EWSMailAttachmentModel.m; sourceTree = "<group>"; };
+		445077B21D757839004A9B38 /* EWSMailAttachment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EWSMailAttachment.h; path = EWSManager/EWSMailAttachment.h; sourceTree = "<group>"; };
+		445077B31D757839004A9B38 /* EWSMailAttachment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EWSMailAttachment.m; path = EWSManager/EWSMailAttachment.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		44394CC51D6550C500C5A9E2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		44394CBF1D6550C500C5A9E2 = {
+			isa = PBXGroup;
+			children = (
+				44394CCA1D6550C600C5A9E2 /* EWS-For-iOS */,
+				44394CC91D6550C500C5A9E2 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		44394CC91D6550C500C5A9E2 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				44394CC81D6550C500C5A9E2 /* EWS-For-iOS.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		44394CCA1D6550C600C5A9E2 /* EWS-For-iOS */ = {
+			isa = PBXGroup;
+			children = (
+				44394CEC1D65628C00C5A9E2 /* EWSModel */,
+				44394CE21D6550DC00C5A9E2 /* EWSManager */,
+				44394CCE1D6550C600C5A9E2 /* AppDelegate.h */,
+				44394CCF1D6550C600C5A9E2 /* AppDelegate.m */,
+				44394CD11D6550C600C5A9E2 /* ViewController.h */,
+				44394CD21D6550C600C5A9E2 /* ViewController.m */,
+				44394CD41D6550C600C5A9E2 /* Main.storyboard */,
+				44394CD71D6550C600C5A9E2 /* Assets.xcassets */,
+				44394CD91D6550C600C5A9E2 /* LaunchScreen.storyboard */,
+				44394CDC1D6550C600C5A9E2 /* Info.plist */,
+				44394CCB1D6550C600C5A9E2 /* Supporting Files */,
+			);
+			path = "EWS-For-iOS";
+			sourceTree = "<group>";
+		};
+		44394CCB1D6550C600C5A9E2 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				44394CCC1D6550C600C5A9E2 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		44394CE21D6550DC00C5A9E2 /* EWSManager */ = {
+			isa = PBXGroup;
+			children = (
+				44394CE31D6556E600C5A9E2 /* EWSManager.h */,
+				44394CE41D6556E600C5A9E2 /* EWSManager.m */,
+				44394CF31D659B9C00C5A9E2 /* EWSHttpRequest.h */,
+				44394CF41D659B9C00C5A9E2 /* EWSHttpRequest.m */,
+				44394CF01D659B7C00C5A9E2 /* EWSXmlParser.h */,
+				44394CF11D659B7C00C5A9E2 /* EWSXmlParser.m */,
+				44394CE61D65607F00C5A9E2 /* EWSAutodiscover.h */,
+				44394CE71D65607F00C5A9E2 /* EWSAutodiscover.m */,
+				44410AF41D73C96100B5B2EE /* EWSInboxList.h */,
+				44410AF51D73C96100B5B2EE /* EWSInboxList.m */,
+				445077A61D753537004A9B38 /* EWSItemContent.h */,
+				445077A71D753537004A9B38 /* EWSItemContent.m */,
+				445077B21D757839004A9B38 /* EWSMailAttachment.h */,
+				445077B31D757839004A9B38 /* EWSMailAttachment.m */,
+			);
+			name = EWSManager;
+			sourceTree = "<group>";
+		};
+		44394CEC1D65628C00C5A9E2 /* EWSModel */ = {
+			isa = PBXGroup;
+			children = (
+				44394CED1D6562E000C5A9E2 /* EWSEmailBoxModel.h */,
+				44394CEE1D6562E000C5A9E2 /* EWSEmailBoxModel.m */,
+				445077A31D753199004A9B38 /* EWSInboxListModel.h */,
+				445077A41D753199004A9B38 /* EWSInboxListModel.m */,
+				445077A91D753599004A9B38 /* EWSItemContentModel.h */,
+				445077AA1D753599004A9B38 /* EWSItemContentModel.m */,
+				445077AC1D75360F004A9B38 /* EWSMailAccountModel.h */,
+				445077AD1D75360F004A9B38 /* EWSMailAccountModel.m */,
+				445077AF1D753668004A9B38 /* EWSMailAttachmentModel.h */,
+				445077B01D753668004A9B38 /* EWSMailAttachmentModel.m */,
+			);
+			name = EWSModel;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		44394CC71D6550C500C5A9E2 /* EWS-For-iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 44394CDF1D6550C600C5A9E2 /* Build configuration list for PBXNativeTarget "EWS-For-iOS" */;
+			buildPhases = (
+				44394CC41D6550C500C5A9E2 /* Sources */,
+				44394CC51D6550C500C5A9E2 /* Frameworks */,
+				44394CC61D6550C500C5A9E2 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "EWS-For-iOS";
+			productName = "EWS-For-iOS";
+			productReference = 44394CC81D6550C500C5A9E2 /* EWS-For-iOS.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		44394CC01D6550C500C5A9E2 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0730;
+				ORGANIZATIONNAME = wangxk;
+				TargetAttributes = {
+					44394CC71D6550C500C5A9E2 = {
+						CreatedOnToolsVersion = 7.3.1;
+					};
+				};
+			};
+			buildConfigurationList = 44394CC31D6550C500C5A9E2 /* Build configuration list for PBXProject "EWS-For-iOS" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 44394CBF1D6550C500C5A9E2;
+			productRefGroup = 44394CC91D6550C500C5A9E2 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				44394CC71D6550C500C5A9E2 /* EWS-For-iOS */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		44394CC61D6550C500C5A9E2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				44394CDB1D6550C600C5A9E2 /* LaunchScreen.storyboard in Resources */,
+				44394CD81D6550C600C5A9E2 /* Assets.xcassets in Resources */,
+				44394CD61D6550C600C5A9E2 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		44394CC41D6550C500C5A9E2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				44394CD31D6550C600C5A9E2 /* ViewController.m in Sources */,
+				44394CE51D6556E600C5A9E2 /* EWSManager.m in Sources */,
+				445077A81D753537004A9B38 /* EWSItemContent.m in Sources */,
+				445077AE1D75360F004A9B38 /* EWSMailAccountModel.m in Sources */,
+				445077B41D757839004A9B38 /* EWSMailAttachment.m in Sources */,
+				445077A51D753199004A9B38 /* EWSInboxListModel.m in Sources */,
+				44394CE81D65607F00C5A9E2 /* EWSAutodiscover.m in Sources */,
+				44394CF51D659B9C00C5A9E2 /* EWSHttpRequest.m in Sources */,
+				445077B11D753668004A9B38 /* EWSMailAttachmentModel.m in Sources */,
+				44394CD01D6550C600C5A9E2 /* AppDelegate.m in Sources */,
+				44410AF61D73C96100B5B2EE /* EWSInboxList.m in Sources */,
+				44394CEF1D6562E000C5A9E2 /* EWSEmailBoxModel.m in Sources */,
+				44394CF21D659B7C00C5A9E2 /* EWSXmlParser.m in Sources */,
+				445077AB1D753599004A9B38 /* EWSItemContentModel.m in Sources */,
+				44394CCD1D6550C600C5A9E2 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		44394CD41D6550C600C5A9E2 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				44394CD51D6550C600C5A9E2 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		44394CD91D6550C600C5A9E2 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				44394CDA1D6550C600C5A9E2 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		44394CDD1D6550C600C5A9E2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		44394CDE1D6550C600C5A9E2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		44394CE01D6550C600C5A9E2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = "EWS-For-iOS/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "wangxk.EWS-For-iOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		44394CE11D6550C600C5A9E2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = "EWS-For-iOS/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "wangxk.EWS-For-iOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		44394CC31D6550C500C5A9E2 /* Build configuration list for PBXProject "EWS-For-iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				44394CDD1D6550C600C5A9E2 /* Debug */,
+				44394CDE1D6550C600C5A9E2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		44394CDF1D6550C600C5A9E2 /* Build configuration list for PBXNativeTarget "EWS-For-iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				44394CE01D6550C600C5A9E2 /* Debug */,
+				44394CE11D6550C600C5A9E2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 44394CC01D6550C500C5A9E2 /* Project object */;
+}
