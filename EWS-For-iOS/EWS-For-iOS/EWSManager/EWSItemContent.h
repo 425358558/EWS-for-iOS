@@ -12,6 +12,6 @@
 
 @interface EWSItemContent : NSObject
 
--(void)getItemContentWithEWSUrl:(NSString *)url item:(EWSInboxListModel *)item finishBlock:(void (^)(EWSItemContentModel *itemContentInfo))getItemContentBlock;
+-(void)getItemContentWithEWSUrl:(NSString *)url item:(EWSInboxListModel *)item finishBlock:(void (^)(EWSItemContentModel *itemContentInfo, NSError *error))getItemContentBlock;
 
 @end

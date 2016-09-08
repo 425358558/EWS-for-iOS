@@ -10,6 +10,6 @@
 
 @interface EWSAutodiscover : NSObject
 
--(void)autoDiscoverWithEmailAddress:(NSString *)emailAddress finishBlock:(void(^)(NSString *ewsUrl))getEWSUrlBlock;
+-(void)autoDiscoverWithEmailAddress:(NSString *)emailAddress finishBlock:(void(^)(NSString *ewsUrl, NSError *error))getEWSUrlBlock;
 
 @end

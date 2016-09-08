@@ -11,7 +11,7 @@
 #import "EWSXmlParser.h"
 #import "EWSInboxListModel.h"
 
-typedef void (^GetInboxListBlock)(NSMutableArray *inboxList);
+typedef void (^GetInboxListBlock)(NSMutableArray *inboxList, NSError *error);
 
 @implementation EWSInboxList{
     EWSHttpRequest *request;
@@ -22,6 +22,7 @@ typedef void (^GetInboxListBlock)(NSMutableArray *inboxList);
     
     NSString *currentElement;
     NSMutableArray *_inboxListArray;
+    NSError *_error;
 }
 
 
@@ -42,7 +43,7 @@ typedef void (^GetInboxListBlock)(NSMutableArray *inboxList);
 }
 
 
--(void)getInboxListWithEWSUrl:(NSString *)url finishBlock:(void(^)(NSMutableArray *inboxList))getInboxListBlock{
+-(void)getInboxListWithEWSUrl:(NSString *)url finishBlock:(void(^)(NSMutableArray *inboxList, NSError *error))getInboxListBlock{
     _getInboxListBlock = getInboxListBlock;
     
     NSString *soapXmlString =
@@ -72,7 +73,7 @@ typedef void (^GetInboxListBlock)(NSMutableArray *inboxList);
         NSLog(@"---inboxList---finish-------");
         [self requestFinishLoading];
     } error:^(NSError *error) {
-        NSLog(@"error:%@",error);
+        _error = error;
     }];
 }
 
@@ -110,7 +111,7 @@ typedef void (^GetInboxListBlock)(NSMutableArray *inboxList);
 
 -(void)inboxListDidEndDocument{
     if (_getInboxListBlock) {
-        _getInboxListBlock(_inboxListArray);
+        _getInboxListBlock(_inboxListArray,_error);
     }
 }
 

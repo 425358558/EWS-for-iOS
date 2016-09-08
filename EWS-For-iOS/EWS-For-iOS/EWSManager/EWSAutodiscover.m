@@ -10,7 +10,7 @@
 #import "EWSHttpRequest.h"
 #import "EWSXmlParser.h"
 
-typedef void (^GetEWSUrlBlock)(NSString *ewsUrl);
+typedef void (^GetEWSUrlBlock)(NSString *ewsUrl, NSError *error);
 
 @implementation EWSAutodiscover{
     EWSHttpRequest *request;
@@ -23,6 +23,7 @@ typedef void (^GetEWSUrlBlock)(NSString *ewsUrl);
     
     NSString *currentElement;
     NSString *ewsUrl;
+    NSError *_error;
 }
 
 -(instancetype)init{
@@ -54,7 +55,7 @@ typedef void (^GetEWSUrlBlock)(NSString *ewsUrl);
     }
 }
 
--(void)autoDiscoverWithEmailAddress:(NSString *)emailAddress finishBlock:(void(^)(NSString *ewsUrl))getEWSUrlBlock{
+-(void)autoDiscoverWithEmailAddress:(NSString *)emailAddress finishBlock:(void(^)(NSString *ewsUrl, NSError *error))getEWSUrlBlock{
     _getEWSUrlBlock = [getEWSUrlBlock copy];
     
     NSString *soapXmlString = [NSString stringWithFormat:
@@ -75,7 +76,7 @@ typedef void (^GetEWSUrlBlock)(NSString *ewsUrl);
         NSLog(@"data:%@",[[NSString alloc] initWithData:eData encoding:NSUTF8StringEncoding]);
         [self requestFinishLoading];
     } error:^(NSError *error) {
-        NSLog(@"error:%@",error);
+        _error = error;
     }];
 }
 
@@ -102,7 +103,7 @@ typedef void (^GetEWSUrlBlock)(NSString *ewsUrl);
 
 -(void)autodiscoverDidEndDocument{
     if (_getEWSUrlBlock) {
-        _getEWSUrlBlock(ewsUrl);
+        _getEWSUrlBlock(ewsUrl, _error);
     }
 }
 

@@ -10,7 +10,7 @@
 #import "EWSHttpRequest.h"
 #import "EWSXmlParser.h"
 
-typedef void (^GetItemContentBlock)(EWSItemContentModel *itemContentInfo);
+typedef void (^GetItemContentBlock)(EWSItemContentModel *itemContentInfo, NSError *error);
 
 @implementation EWSItemContent{
     EWSHttpRequest *request;
@@ -24,6 +24,7 @@ typedef void (^GetItemContentBlock)(EWSItemContentModel *itemContentInfo);
     EWSItemContentModel *_itemContentModel;
     EWSMailAttachmentModel *_mailAttachmentModel;
     NSMutableString *_contentString;
+    NSError *_error;
 }
 
 
@@ -43,7 +44,7 @@ typedef void (^GetItemContentBlock)(EWSItemContentModel *itemContentInfo);
     parser = [[EWSXmlParser alloc] init];
 }
 
--(void)getItemContentWithEWSUrl:(NSString *)url item:(EWSInboxListModel *)item finishBlock:(void (^)(EWSItemContentModel *itemContentInfo))getItemContentBlock{
+-(void)getItemContentWithEWSUrl:(NSString *)url item:(EWSInboxListModel *)item finishBlock:(void (^)(EWSItemContentModel *itemContentInfo, NSError *error))getItemContentBlock{
     _getItemContentBlock = getItemContentBlock;
     
     NSString *soapXmlString = [NSString stringWithFormat:@"<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
@@ -76,7 +77,7 @@ typedef void (^GetItemContentBlock)(EWSItemContentModel *itemContentInfo);
         NSLog(@"----itemContent--finish-------");
         [self requestFinishLoading];
     } error:^(NSError *error) {
-        NSLog(@"error:%@",error);
+        _error = error;
     }];
 }
 
@@ -207,7 +208,7 @@ typedef void (^GetItemContentBlock)(EWSItemContentModel *itemContentInfo);
     _itemContentModel.itemContentHtmlString = _contentString;
     
     if (_getItemContentBlock) {
-        _getItemContentBlock(_itemContentModel);
+        _getItemContentBlock(_itemContentModel, _error);
     }
 }
 

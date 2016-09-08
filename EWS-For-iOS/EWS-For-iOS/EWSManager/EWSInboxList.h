@@ -10,6 +10,6 @@
 
 @interface EWSInboxList : NSObject
 
--(void)getInboxListWithEWSUrl:(NSString *)url finishBlock:(void(^)(NSMutableArray *inboxList))getInboxListBlock;
+-(void)getInboxListWithEWSUrl:(NSString *)url finishBlock:(void(^)(NSMutableArray *inboxList, NSError *error))getInboxListBlock;
 
 @end
