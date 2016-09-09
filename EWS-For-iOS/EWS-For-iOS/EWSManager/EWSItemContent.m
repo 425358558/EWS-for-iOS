@@ -42,6 +42,8 @@ typedef void (^GetItemContentBlock)(EWSItemContentModel *itemContentInfo, NSErro
     eData = [[NSMutableData alloc] init];
     request = [[EWSHttpRequest alloc] init];
     parser = [[EWSXmlParser alloc] init];
+    _itemContentModel = [[EWSItemContentModel alloc] init];
+    _contentString = [[NSMutableString alloc] init];
 }
 
 -(void)getItemContentWithEWSUrl:(NSString *)url item:(EWSInboxListModel *)item finishBlock:(void (^)(EWSItemContentModel *itemContentInfo, NSError *error))getItemContentBlock{
@@ -69,12 +71,12 @@ typedef void (^GetItemContentBlock)(EWSItemContentModel *itemContentInfo, NSErro
                                "</soap:Envelope>\n",item.itemId,item.changeKey];
     
     [request ewsHttpRequest:soapXmlString andUrl:url receiveResponse:^(NSURLResponse *response) {
-        NSLog(@"response:%@",response);
+//        NSLog(@"response:%@",response);
     } reveiveData:^(NSData *data) {
         [eData appendData:data];
     } finishLoading:^{
-        NSLog(@"data:%@",[[NSString alloc] initWithData:eData encoding:NSUTF8StringEncoding]);
-        NSLog(@"----itemContent--finish-------");
+//        NSLog(@"data:%@",[[NSString alloc] initWithData:eData encoding:NSUTF8StringEncoding]);
+//        NSLog(@"----itemContent--finish-------");
         [self requestFinishLoading];
     } error:^(NSError *error) {
         _error = error;

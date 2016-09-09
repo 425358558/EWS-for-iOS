@@ -12,7 +12,7 @@
 
 @property (nonatomic, strong) NSString *emailAddress;
 @property (nonatomic, strong) NSString *password;
-@property (nonatomic, strong) NSString *description;
+@property (nonatomic, strong) NSString *mailBoxDescription;
 @property (nonatomic, strong) NSString *ewsUrl;
 @property (nonatomic, strong) NSString *mailServerAddress;
 @property (nonatomic, strong) NSString *domain;

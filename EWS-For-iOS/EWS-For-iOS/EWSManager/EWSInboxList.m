@@ -10,6 +10,7 @@
 #import "EWSHttpRequest.h"
 #import "EWSXmlParser.h"
 #import "EWSInboxListModel.h"
+#import "EWSManager.h"
 
 typedef void (^GetInboxListBlock)(NSMutableArray *inboxList, NSError *error);
 
@@ -40,6 +41,7 @@ typedef void (^GetInboxListBlock)(NSMutableArray *inboxList, NSError *error);
     eData = [[NSMutableData alloc] init];
     request = [[EWSHttpRequest alloc] init];
     parser = [[EWSXmlParser alloc] init];
+    _inboxListArray = [[NSMutableArray alloc] init];
 }
 
 
@@ -64,7 +66,7 @@ typedef void (^GetInboxListBlock)(NSMutableArray *inboxList, NSError *error);
     "</soap:Body>\n"
     "</soap:Envelope>\n";
     
-    [request ewsHttpRequest:soapXmlString andUrl:url receiveResponse:^(NSURLResponse *response) {
+    [request ewsHttpRequest:soapXmlString andUrl:url emailBoxInfo:((EWSManager *)[EWSManager sharedEwsManager]).ewsEmailBoxModel receiveResponse:^(NSURLResponse *response) {
         NSLog(@"response:%@",response);
     } reveiveData:^(NSData *data) {
         [eData appendData:data];

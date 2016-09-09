@@ -9,6 +9,7 @@
 #import "EWSAutodiscover.h"
 #import "EWSHttpRequest.h"
 #import "EWSXmlParser.h"
+#import "EWSManager.h"
 
 typedef void (^GetEWSUrlBlock)(NSString *ewsUrl, NSError *error);
 
@@ -68,16 +69,20 @@ typedef void (^GetEWSUrlBlock)(NSString *ewsUrl, NSError *error);
     
     [self setAutodiscoverAddressList:emailAddress];
     
-    [request ewsHttpRequest:soapXmlString andUrl:[autodiscoverAddressList objectAtIndex:0] receiveResponse:^(NSURLResponse *response) {
-        NSLog(@"response:%@",response);
-    } reveiveData:^(NSData *data) {
-        [eData appendData:data];
-    } finishLoading:^{
-        NSLog(@"data:%@",[[NSString alloc] initWithData:eData encoding:NSUTF8StringEncoding]);
-        [self requestFinishLoading];
-    } error:^(NSError *error) {
-        _error = error;
-    }];
+    EWSEmailBoxModel *ebInfo = ((EWSManager *)[EWSManager sharedEwsManager]).ewsEmailBoxModel;
+    
+    for (NSString *url in autodiscoverAddressList) {
+        [request ewsHttpRequest:soapXmlString andUrl:url emailBoxInfo:ebInfo receiveResponse:^(NSURLResponse *response) {
+            NSLog(@"response:%@",response);
+        } reveiveData:^(NSData *data) {
+            [eData appendData:data];
+        } finishLoading:^{
+            NSLog(@"data:%@",[[NSString alloc] initWithData:eData encoding:NSUTF8StringEncoding]);
+            [self requestFinishLoading];
+        } error:^(NSError *error) {
+            _error = error;
+        }];
+    }
 }
 
 -(void)requestFinishLoading{
@@ -87,10 +92,13 @@ typedef void (^GetEWSUrlBlock)(NSString *ewsUrl, NSError *error);
         currentElement = elementName;
         
     } foundCharacters:^(NSString *string) {
+        
         [self autodiscoverFoundCharacters:string];
     } didEndElementBlock:^(NSString *elementName, NSString *namespaceURI, NSString *qName) {
+        
         currentElement = nil;
     } didEndDocument:^{
+        
         [self autodiscoverDidEndDocument];
     }];
 }

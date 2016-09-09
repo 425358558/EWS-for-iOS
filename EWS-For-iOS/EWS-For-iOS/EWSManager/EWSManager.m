@@ -9,10 +9,15 @@
 #import "EWSManager.h"
 #import "EWSAutodiscover.h"
 #import "EWSInboxList.h"
+#import "EWSInboxListModel.h"
+#import "EWSItemContent.h"
 
 static EWSManager *instance = nil;
 
-@implementation EWSManager
+@implementation EWSManager{
+    NSArray *_inboxList;
+    NSMutableArray *_allItemContentArray;
+}
 
 @synthesize ewsEmailBoxModel;
 
@@ -37,7 +42,7 @@ static EWSManager *instance = nil;
     ewsEmailBoxModel = [[EWSEmailBoxModel alloc] init];
     ewsEmailBoxModel.emailAddress = emailAddress;
     ewsEmailBoxModel.password = password;
-    ewsEmailBoxModel.description = description;
+    ewsEmailBoxModel.mailBoxDescription = description;
     ewsEmailBoxModel.mailServerAddress = mailServerAddress;
     ewsEmailBoxModel.domain = domain;
     
@@ -51,37 +56,57 @@ static EWSManager *instance = nil;
 }
 
 -(void)autodiscover{
-    if (ewsEmailBoxModel) {
-        [[[EWSAutodiscover alloc] init] autoDiscoverWithEmailAddress:ewsEmailBoxModel.emailAddress finishBlock:^(NSString *ewsUrl, NSError *error) {
-            if (error) {
-                NSLog(@"error:%@",error);
-                return ;
-            }
-            ewsEmailBoxModel.mailServerAddress = ewsUrl;
-        }];
-    }
+    [[[EWSAutodiscover alloc] init] autoDiscoverWithEmailAddress:ewsEmailBoxModel.emailAddress finishBlock:^(NSString *ewsUrl, NSError *error) {
+        if (error) {
+            NSLog(@"error:%@",error);
+        }
+        ewsEmailBoxModel.mailServerAddress = ewsUrl;
+    }];
 }
 
--(NSArray *)getInboxList{
-    __block NSArray *list;
-    if (ewsEmailBoxModel) {
-        [[[EWSInboxList alloc] init] getInboxListWithEWSUrl:ewsEmailBoxModel.mailServerAddress finishBlock:^(NSMutableArray *inboxList, NSError *error) {
+-(void)getInboxList{
+    [[[EWSInboxList alloc] init] getInboxListWithEWSUrl:ewsEmailBoxModel.mailServerAddress finishBlock:^(NSMutableArray *inboxList, NSError *error) {
+        if (error) {
+            NSLog(@"error:%@",error);
+        }
+        
+    }];
+    
+}
+
+-(void)getItemnContentWithInboxListModel:(EWSInboxListModel *)model{
+    [[[EWSItemContent alloc] init] getItemContentWithEWSUrl:ewsEmailBoxModel.mailServerAddress item:model finishBlock:^(EWSItemContentModel *itemContentInfo, NSError *error) {
+        if (error) {
+            NSLog(@"error:%@",error);
+        }
+        NSLog(@"---content:%@-%@-%@-%@---",itemContentInfo.itemSubject,itemContentInfo.itemContentHtmlString,itemContentInfo.dateTimeSentStr,itemContentInfo.size);
+    }];
+}
+
+
+
+-(void)getAllItemContent{
+    [[[EWSInboxList alloc] init] getInboxListWithEWSUrl:ewsEmailBoxModel.mailServerAddress finishBlock:^(NSMutableArray *inboxList, NSError *error) {
+        if (error) {
+            NSLog(@"error:%@",error);
+        }
+        _inboxList = inboxList;
+        [self getItemContentRecursion:0];
+    }];
+    
+}
+
+-(void)getItemContentRecursion:(int)index{
+    if (index<_inboxList.count) {
+        [[[EWSItemContent alloc] init] getItemContentWithEWSUrl:ewsEmailBoxModel.mailServerAddress item:_inboxList[index] finishBlock:^(EWSItemContentModel *itemContentInfo, NSError *error) {
             if (error) {
                 NSLog(@"error:%@",error);
-                return ;
             }
-            list = [inboxList copy];
+            NSLog(@"---content:%@-%@-%@-%@---",itemContentInfo.itemSubject,itemContentInfo.itemContentHtmlString,itemContentInfo.dateTimeSentStr,itemContentInfo.size);
+            [self getItemContentRecursion:index+1];
         }];
     }
     
-    return list;
-}
-
--(NSArray *)getAllItemContent{
-    NSArray *inboxList = [self getInboxList];
-    if (ewsEmailBoxModel) {
-        <#statements#>
-    }
 }
 
 @end

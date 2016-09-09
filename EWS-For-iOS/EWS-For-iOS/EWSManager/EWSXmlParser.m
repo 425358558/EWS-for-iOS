@@ -30,7 +30,7 @@ typedef void (^ParserDidEndDocumentBlock)();
     _parserDidStartElementBlock = parserDidStartElementBlock;
     _parserFoundCharactersBlock = parserFoundCharactersBlock;
     _parserDidEndElementBlock = parserDidEndElementBlock;
-    _parserDidEndDocumentBlock = parserDidEndElementBlock;
+    _parserDidEndDocumentBlock = parserDidEndDocumentBlock;
     
     [self parserWithData:data];
 }
@@ -67,6 +67,7 @@ typedef void (^ParserDidEndDocumentBlock)();
 }
 
 - (void)parserDidEndDocument:(NSXMLParser *)parser{
+    
     if (_parserDidEndDocumentBlock) {
         _parserDidEndDocumentBlock();
     }
