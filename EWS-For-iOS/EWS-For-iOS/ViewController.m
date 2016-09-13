@@ -35,36 +35,43 @@
 }
 
 -(void)initUI{
-    _eAddressTf = [[UITextField alloc] initWithFrame:CGRectMake(20, 80, ScreenWidth-40, 30)];
-    _eAddressTf.placeholder = @"邮箱（必填）";
-    _eAddressTf.delegate = self;
     
-    [self.view addSubview:_eAddressTf];
+    [self.view addSubview:({
+        _eAddressTf = [[UITextField alloc] initWithFrame:CGRectMake(20, 80, ScreenWidth-40, 30)];
+        _eAddressTf.placeholder = @"邮箱（必填）";
+        _eAddressTf.delegate = self;
+        _eAddressTf;
+    })];
     
-    _ePasswordTf = [[UITextField alloc] initWithFrame:CGRectMake(20, 130, ScreenWidth-40, 30)];
-    _ePasswordTf.placeholder = @"密码（必填）";
-    _ePasswordTf.delegate = self;
+    [self.view addSubview:({
+        _ePasswordTf = [[UITextField alloc] initWithFrame:CGRectMake(20, 130, ScreenWidth-40, 30)];
+        _ePasswordTf.placeholder = @"密码（必填）";
+        _ePasswordTf.delegate = self;
+        _ePasswordTf;
+    })];
     
-    [self.view addSubview:_ePasswordTf];
+    [self.view addSubview:({
+        _eDescription = [[UITextField alloc] initWithFrame:CGRectMake(20, 180, ScreenWidth-40, 30)];
+        _eDescription.placeholder = @"描述（选填）";
+        _eDescription.delegate = self;
+        _eDescription;
+    })];
     
-    _eDescription = [[UITextField alloc] initWithFrame:CGRectMake(20, 180, ScreenWidth-40, 30)];
-    _eDescription.placeholder = @"描述（选填）";
-    _eDescription.delegate = self;
+    [self.view addSubview:({
+        _eServerAddress = [[UITextField alloc] initWithFrame:CGRectMake(20, 230, ScreenWidth-40, 30)];
+        _eServerAddress.placeholder = @"邮箱服务器地址（选填）";
+        _eServerAddress.delegate = self;
+        _eServerAddress;
+    })];
     
-    [self.view addSubview:_eDescription];
+    [self.view addSubview:({
+        _eConfirmBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        _eConfirmBtn.frame = CGRectMake(20, 280, ScreenWidth-40, 30);
+        [_eConfirmBtn addTarget:self action:@selector(confirmBtnClicked) forControlEvents:UIControlEventTouchUpInside];
+        [_eConfirmBtn setTitle:@"确认" forState:UIControlStateNormal];
+        _eConfirmBtn;
+    })];
     
-    _eServerAddress = [[UITextField alloc] initWithFrame:CGRectMake(20, 230, ScreenWidth-40, 30)];
-    _eServerAddress.placeholder = @"邮箱服务器地址（选填）";
-    _eServerAddress.delegate = self;
-    
-    [self.view addSubview:_eServerAddress];
-    
-    _eConfirmBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    _eConfirmBtn.frame = CGRectMake(20, 280, ScreenWidth-40, 30);
-    [_eConfirmBtn addTarget:self action:@selector(confirmBtnClicked) forControlEvents:UIControlEventTouchUpInside];
-    [_eConfirmBtn setTitle:@"确认" forState:UIControlStateNormal];
-    
-    [self.view addSubview:_eConfirmBtn];
 }
 
 -(void)confirmBtnClicked{
