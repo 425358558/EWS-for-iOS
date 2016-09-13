@@ -9,11 +9,6 @@
 #import <Foundation/Foundation.h>
 #import "EWSEmailBoxModel.h"
 
-typedef void  (^HttpRequestReceiveResponseBlock)(NSURLResponse *response);
-typedef void  (^HttpRequestErrorBlock)(NSError *error);
-typedef void  (^HttpRequestReceiveDataBlock)(NSData *data);
-typedef void  (^HttpRequestDidFinishLoadingBlock)();
-
 @interface EWSHttpRequest : NSObject
 
 @property (nonatomic, strong) EWSEmailBoxModel *emailBoxModel;

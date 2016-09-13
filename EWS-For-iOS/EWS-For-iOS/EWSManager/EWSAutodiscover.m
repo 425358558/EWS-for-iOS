@@ -73,11 +73,11 @@ typedef void (^GetEWSUrlBlock)(NSString *ewsUrl, NSError *error);
     
     for (NSString *url in autodiscoverAddressList) {
         [request ewsHttpRequest:soapXmlString andUrl:url emailBoxInfo:ebInfo receiveResponse:^(NSURLResponse *response) {
-            NSLog(@"response:%@",response);
+//            NSLog(@"response:%@",response);
         } reveiveData:^(NSData *data) {
             [eData appendData:data];
         } finishLoading:^{
-            NSLog(@"data:%@",[[NSString alloc] initWithData:eData encoding:NSUTF8StringEncoding]);
+//            NSLog(@"data:%@",[[NSString alloc] initWithData:eData encoding:NSUTF8StringEncoding]);
             [self requestFinishLoading];
         } error:^(NSError *error) {
             _error = error;

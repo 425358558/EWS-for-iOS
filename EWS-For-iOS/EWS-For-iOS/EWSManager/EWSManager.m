@@ -14,9 +14,14 @@
 
 static EWSManager *instance = nil;
 
+typedef void (^ManagerGetAllItemContentBlock)(NSArray *allItemArray, NSError *error);
+
 @implementation EWSManager{
     NSArray *_inboxList;
     NSMutableArray *_allItemContentArray;
+    NSError *_error;
+    
+    ManagerGetAllItemContentBlock _managerGetAllItemContentBlock;
 }
 
 @synthesize ewsEmailBoxModel;
@@ -49,7 +54,7 @@ static EWSManager *instance = nil;
     if (!(ewsEmailBoxModel.emailAddress&&ewsEmailBoxModel.password)) {
         NSLog(@"emailAddress and password can't be nil");
     }
-    else if (!ewsEmailBoxModel.mailServerAddress) {
+    else if (!ewsEmailBoxModel.mailServerAddress||[ewsEmailBoxModel.mailServerAddress isEqualToString:@""]) {
         [self autodiscover];
     }
     
@@ -85,12 +90,14 @@ static EWSManager *instance = nil;
 
 
 
--(void)getAllItemContent{
+-(void)getAllItemContent:(void (^)(NSArray *allItemArray, NSError *error))managerGetAllItemContentBlock{
+    _managerGetAllItemContentBlock = managerGetAllItemContentBlock;
     [[[EWSInboxList alloc] init] getInboxListWithEWSUrl:ewsEmailBoxModel.mailServerAddress finishBlock:^(NSMutableArray *inboxList, NSError *error) {
         if (error) {
             NSLog(@"error:%@",error);
         }
         _inboxList = inboxList;
+        _allItemContentArray = [[NSMutableArray alloc] init];
         [self getItemContentRecursion:0];
     }];
     
@@ -100,13 +107,18 @@ static EWSManager *instance = nil;
     if (index<_inboxList.count) {
         [[[EWSItemContent alloc] init] getItemContentWithEWSUrl:ewsEmailBoxModel.mailServerAddress item:_inboxList[index] finishBlock:^(EWSItemContentModel *itemContentInfo, NSError *error) {
             if (error) {
-                NSLog(@"error:%@",error);
+                _error = error;
             }
-            NSLog(@"---content:%@-%@-%@-%@---",itemContentInfo.itemSubject,itemContentInfo.itemContentHtmlString,itemContentInfo.dateTimeSentStr,itemContentInfo.size);
+            [_allItemContentArray addObject:itemContentInfo];
             [self getItemContentRecursion:index+1];
         }];
     }
-    
+    else{
+        if (_managerGetAllItemContentBlock) {
+            
+            _managerGetAllItemContentBlock([_allItemContentArray copy], _error);
+        }
+    }
 }
 
 @end
