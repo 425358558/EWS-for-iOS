@@ -11,6 +11,6 @@
 
 @interface EWSMailAttachment : NSObject
 
--(void)getAttachmentWithEWSUrl:(NSString *)url attachmentInfo:(EWSMailAttachmentModel *)attachmentInfo;
+-(void)getAttachmentWithEWSUrl:(NSString *)url attachmentInfo:(EWSMailAttachmentModel *)attachmentInfo complete:(void (^)())completeBlock;
 
 @end

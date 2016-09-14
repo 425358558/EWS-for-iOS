@@ -9,6 +9,8 @@
 #import "ViewController.h"
 #import "EWSManager.h"
 #import "EWSItemContentModel.h"
+#import "EWSMailAttachmentModel.h"
+#import "EWSMailAttachment.h"
 
 #define ScreenWidth  [UIScreen mainScreen].bounds.size.width
 #define ScreenHeight [UIScreen mainScreen].bounds.size.height
@@ -75,6 +77,8 @@
 }
 
 -(void)confirmBtnClicked{
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    
     [[EWSManager sharedEwsManager] setEmailBoxInfoEmailAddress:_eAddressTf.text password:_ePasswordTf.text description:_eDescription.text mailServerAddress:_eServerAddress.text domain:nil];
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -84,9 +88,16 @@
                 NSLog(@"error:%@",error);
             }
             else{
-                EWSItemContentModel *itemContentInfo = allItemArray[0];
-                NSLog(@"---content:%@-%@-%@-%@---",itemContentInfo.itemSubject,itemContentInfo.itemContentHtmlString,itemContentInfo.dateTimeSentStr,itemContentInfo.size);
+                EWSItemContentModel *itemContentInfo = allItemArray[1];
+                if (itemContentInfo.hasAttachments) {
+                    [[EWSManager sharedEwsManager] getMailAttachmentWithItemContentInfo:itemContentInfo complete:^{
+                        NSLog(@"---content:%@-%@-%@-%@-%@--",itemContentInfo.itemSubject,itemContentInfo.itemContentHtmlString,itemContentInfo.dateTimeSentStr,itemContentInfo.size,((EWSMailAttachmentModel *)itemContentInfo.attachmentList[0]).attachmentPath);
+                    }];
+                }
+                
             }
+             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            
         }];
     });
 }

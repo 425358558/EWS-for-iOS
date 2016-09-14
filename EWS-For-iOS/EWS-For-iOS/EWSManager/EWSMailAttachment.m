@@ -10,6 +10,8 @@
 #import "EWSHttpRequest.h"
 #import "EWSXmlParser.h"
 
+typedef void (^GetAttachmentCompleteBlock)();
+
 @implementation EWSMailAttachment{
     EWSHttpRequest *request;
     NSMutableData *eData;
@@ -17,6 +19,8 @@
     
     NSString *currentElement;
     EWSMailAttachmentModel *_mailAttachmentModel;
+    
+    GetAttachmentCompleteBlock _getAttachmentCompleteBlock;
 }
 
 -(instancetype)init{
@@ -37,7 +41,8 @@
 }
 
 
--(void)getAttachmentWithEWSUrl:(NSString *)url attachmentInfo:(EWSMailAttachmentModel *)attachmentInfo{
+-(void)getAttachmentWithEWSUrl:(NSString *)url attachmentInfo:(EWSMailAttachmentModel *)attachmentInfo complete:(void (^)())completeBlock{
+    _getAttachmentCompleteBlock = completeBlock;
     _mailAttachmentModel = attachmentInfo;
     NSString *soapXmlString = [NSString stringWithFormat:@"<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
                                "<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n"
@@ -80,7 +85,7 @@
     } didEndElementBlock:^(NSString *elementName, NSString *namespaceURI, NSString *qName) {
         currentElement = nil;
     } didEndDocument:^{
-        
+        [self mailAttachmentDidEndDocument];
     }];
 }
 
@@ -90,12 +95,19 @@
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         NSString *documentsDirectory = [paths objectAtIndex:0];
         
+//        NSString *fullPathToFile = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"EWSMailAttachments/%@",_mailAttachmentModel.name]];
         NSString *fullPathToFile = [documentsDirectory stringByAppendingPathComponent:_mailAttachmentModel.name];
         
-        [xmlData writeToFile:fullPathToFile atomically:NO];
+        [xmlData writeToFile:fullPathToFile atomically:YES];
         _mailAttachmentModel.attachmentPath = fullPathToFile;
     }
     
+}
+
+-(void)mailAttachmentDidEndDocument{
+    if (_getAttachmentCompleteBlock) {
+        _getAttachmentCompleteBlock();
+    }
 }
 
 @end

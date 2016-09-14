@@ -9,12 +9,14 @@
 #import "EWSManager.h"
 #import "EWSAutodiscover.h"
 #import "EWSInboxList.h"
-#import "EWSInboxListModel.h"
 #import "EWSItemContent.h"
+#import "EWSMailAttachment.h"
 
 static EWSManager *instance = nil;
 
 typedef void (^ManagerGetAllItemContentBlock)(NSArray *allItemArray, NSError *error);
+typedef void (^ManagerGetItemContentBlock)(EWSItemContentModel *model, NSError *error);
+typedef void (^ManagerGetAttachmentCompleteBlock)();
 
 @implementation EWSManager{
     NSArray *_inboxList;
@@ -22,6 +24,8 @@ typedef void (^ManagerGetAllItemContentBlock)(NSArray *allItemArray, NSError *er
     NSError *_error;
     
     ManagerGetAllItemContentBlock _managerGetAllItemContentBlock;
+    ManagerGetItemContentBlock _managerGetItemContentBlock;
+    ManagerGetAttachmentCompleteBlock _managerGetAttachmentCompleteBlock;
 }
 
 @synthesize ewsEmailBoxModel;
@@ -79,12 +83,18 @@ typedef void (^ManagerGetAllItemContentBlock)(NSArray *allItemArray, NSError *er
     
 }
 
--(void)getItemnContentWithInboxListModel:(EWSInboxListModel *)model{
+-(void)getItemnContentWithInboxListModel:(EWSInboxListModel *)model complete:(void (^)(EWSItemContentModel *model, NSError *error))managerGetItemContentBlock{
+    _managerGetItemContentBlock = managerGetItemContentBlock;
     [[[EWSItemContent alloc] init] getItemContentWithEWSUrl:ewsEmailBoxModel.mailServerAddress item:model finishBlock:^(EWSItemContentModel *itemContentInfo, NSError *error) {
         if (error) {
-            NSLog(@"error:%@",error);
+            _error = error;
         }
-        NSLog(@"---content:%@-%@-%@-%@---",itemContentInfo.itemSubject,itemContentInfo.itemContentHtmlString,itemContentInfo.dateTimeSentStr,itemContentInfo.size);
+        else{
+            _error = nil;
+        }
+        if (_managerGetItemContentBlock) {
+            _managerGetItemContentBlock(itemContentInfo, _error);
+        }
     }];
 }
 
@@ -94,7 +104,7 @@ typedef void (^ManagerGetAllItemContentBlock)(NSArray *allItemArray, NSError *er
     _managerGetAllItemContentBlock = managerGetAllItemContentBlock;
     [[[EWSInboxList alloc] init] getInboxListWithEWSUrl:ewsEmailBoxModel.mailServerAddress finishBlock:^(NSMutableArray *inboxList, NSError *error) {
         if (error) {
-            NSLog(@"error:%@",error);
+            NSLog(@"GetInboxListError:%@",error);
         }
         _inboxList = inboxList;
         _allItemContentArray = [[NSMutableArray alloc] init];
@@ -109,6 +119,10 @@ typedef void (^ManagerGetAllItemContentBlock)(NSArray *allItemArray, NSError *er
             if (error) {
                 _error = error;
             }
+            else{
+                _error = nil;
+            }
+            
             [_allItemContentArray addObject:itemContentInfo];
             [self getItemContentRecursion:index+1];
         }];
@@ -117,8 +131,26 @@ typedef void (^ManagerGetAllItemContentBlock)(NSArray *allItemArray, NSError *er
         if (_managerGetAllItemContentBlock) {
             
             _managerGetAllItemContentBlock([_allItemContentArray copy], _error);
+            
+            [_allItemContentArray removeAllObjects];
+            _allItemContentArray = nil;
         }
     }
+}
+
+-(void)getMailAttachmentWithItemContentInfo:(EWSItemContentModel *)itemContentInfo complete:(void (^)())managerGetAttachmentCompleteBlock{
+    _managerGetAttachmentCompleteBlock = managerGetAttachmentCompleteBlock;
+    
+    for (int i=0; i<itemContentInfo.attachmentList.count; i++) {
+        [[[EWSMailAttachment alloc] init] getAttachmentWithEWSUrl:ewsEmailBoxModel.mailServerAddress attachmentInfo:itemContentInfo.attachmentList[i] complete:^{
+            
+            if (_managerGetAttachmentCompleteBlock && i==itemContentInfo.attachmentList.count) {
+                
+                _managerGetAttachmentCompleteBlock();
+            }
+        }];
+    }
+    
 }
 
 @end
