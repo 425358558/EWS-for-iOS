@@ -140,17 +140,20 @@ typedef void (^ManagerGetAttachmentCompleteBlock)();
 
 -(void)getMailAttachmentWithItemContentInfo:(EWSItemContentModel *)itemContentInfo complete:(void (^)())managerGetAttachmentCompleteBlock{
     _managerGetAttachmentCompleteBlock = managerGetAttachmentCompleteBlock;
-    
-    for (int i=0; i<itemContentInfo.attachmentList.count; i++) {
-        [[[EWSMailAttachment alloc] init] getAttachmentWithEWSUrl:ewsEmailBoxModel.mailServerAddress attachmentInfo:itemContentInfo.attachmentList[i] complete:^{
-            
-            if (_managerGetAttachmentCompleteBlock && i==itemContentInfo.attachmentList.count) {
-                
+    [self getMailAttachmentRecursion:itemContentInfo index:0];
+}
+
+-(void)getMailAttachmentRecursion:(EWSItemContentModel *)itemContentInfo index:(int)i {
+    [[[EWSMailAttachment alloc] init] getAttachmentWithEWSUrl:ewsEmailBoxModel.mailServerAddress attachmentInfo:itemContentInfo.attachmentList[i] complete:^{
+        if (i==itemContentInfo.attachmentList.count-1) {
+            if (_managerGetAttachmentCompleteBlock) {
                 _managerGetAttachmentCompleteBlock();
             }
-        }];
-    }
-    
+        }
+        else{
+            [self getMailAttachmentRecursion:itemContentInfo index:i+1];
+        }
+    }];
 }
 
 @end

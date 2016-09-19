@@ -156,7 +156,10 @@ typedef void (^GetItemContentBlock)(EWSItemContentModel *itemContentInfo, NSErro
         }
         else if (_mailAttachmentModel) {
             _mailAttachmentModel.name = string;
-            [_itemContentModel.attachmentList addObject:_mailAttachmentModel];
+            
+            if (![_mailAttachmentModel.attachmentId isEqualToString:((EWSMailAttachmentModel *)[_itemContentModel.attachmentList lastObject]).attachmentId]) {
+                [_itemContentModel.attachmentList addObject:_mailAttachmentModel];
+            }
         }
     }
     else if ([currentElement isEqualToString:@"t:EmailAddress"]) {
@@ -211,6 +214,8 @@ typedef void (^GetItemContentBlock)(EWSItemContentModel *itemContentInfo, NSErro
     
     if (_getItemContentBlock) {
         _getItemContentBlock(_itemContentModel, _error);
+        request = nil;
+        parser = nil;
     }
 }
 

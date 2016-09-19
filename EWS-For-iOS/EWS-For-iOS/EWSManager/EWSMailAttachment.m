@@ -67,7 +67,7 @@ typedef void (^GetAttachmentCompleteBlock)();
     } reveiveData:^(NSData *data) {
         [eData appendData:data];
     } finishLoading:^{
-        NSLog(@"data:%@",[[NSString alloc] initWithData:eData encoding:NSUTF8StringEncoding]);
+//        NSLog(@"data:%@",[[NSString alloc] initWithData:eData encoding:NSUTF8StringEncoding]);
         NSLog(@"---attachment---finish-------");
         [self requestFinishLoading];
     } error:^(NSError *error) {
@@ -107,6 +107,8 @@ typedef void (^GetAttachmentCompleteBlock)();
 -(void)mailAttachmentDidEndDocument{
     if (_getAttachmentCompleteBlock) {
         _getAttachmentCompleteBlock();
+        request = nil;
+        parser = nil;
     }
 }
 

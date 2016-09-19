@@ -97,7 +97,7 @@
                 
             }
              [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-            
+            allItemArray = nil;
         }];
     });
 }
