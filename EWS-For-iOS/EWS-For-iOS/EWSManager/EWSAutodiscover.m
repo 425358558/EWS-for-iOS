@@ -112,9 +112,11 @@ typedef void (^GetEWSUrlBlock)(NSString *ewsUrl, NSError *error);
 -(void)autodiscoverDidEndDocument{
     if (_getEWSUrlBlock) {
         _getEWSUrlBlock(ewsUrl, _error);
-        request = nil;
-        parser = nil;
     }
+    request = nil;
+    parser = nil;
+    eData = nil;
+    autodiscoverAddressList = nil;
 }
 
 @end

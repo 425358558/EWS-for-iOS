@@ -24,6 +24,7 @@ typedef void (^GetItemContentBlock)(EWSItemContentModel *itemContentInfo, NSErro
     EWSItemContentModel *_itemContentModel;
     EWSMailAttachmentModel *_mailAttachmentModel;
     NSMutableString *_contentString;
+    NSMutableString *_itemSubject;
     NSError *_error;
 }
 
@@ -122,13 +123,16 @@ typedef void (^GetItemContentBlock)(EWSItemContentModel *itemContentInfo, NSErro
     else if ([elementName isEqualToString:@"t:AttachmentId"]) {
         _mailAttachmentModel.attachmentId = attributeDict[@"Id"];
     }
+    else if ([elementName isEqualToString:@"t:Subject"]) {
+        _itemSubject = [[NSMutableString alloc] init];
+    }
     
 }
 
 -(void)itemContentFoundCharacters:(NSString *)string{
     
     if ([currentElement isEqualToString:@"t:Subject"]) {
-        _itemContentModel.itemSubject = string;
+        [_itemSubject appendString:string];
     }
     else if ([currentElement isEqualToString:@"t:Body"]){
         [_contentString appendString:string];
@@ -210,13 +214,17 @@ typedef void (^GetItemContentBlock)(EWSItemContentModel *itemContentInfo, NSErro
 }
 
 -(void)itemContentDidEndDocument{
-    _itemContentModel.itemContentHtmlString = _contentString;
+    _itemContentModel.itemContentHtmlString = [_contentString copy];
+    _itemContentModel.itemSubject = [_itemSubject copy];
+    _contentString = nil;
+    _itemSubject = nil;
     
     if (_getItemContentBlock) {
         _getItemContentBlock(_itemContentModel, _error);
-        request = nil;
-        parser = nil;
     }
+    request = nil;
+    parser = nil;
+    eData = nil;
 }
 
 @end

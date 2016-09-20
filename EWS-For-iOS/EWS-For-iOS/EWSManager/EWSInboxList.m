@@ -114,9 +114,10 @@ typedef void (^GetInboxListBlock)(NSMutableArray *inboxList, NSError *error);
 -(void)inboxListDidEndDocument{
     if (_getInboxListBlock) {
         _getInboxListBlock(_inboxListArray,_error);
-        request = nil;
-        parser = nil;
     }
+    request = nil;
+    parser = nil;
+    eData = nil;
 }
 
 @end

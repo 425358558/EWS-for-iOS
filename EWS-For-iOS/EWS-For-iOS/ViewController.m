@@ -11,6 +11,7 @@
 #import "EWSItemContentModel.h"
 #import "EWSMailAttachmentModel.h"
 #import "EWSMailAttachment.h"
+#import "EWSMailAccountModel.h"
 
 #define ScreenWidth  [UIScreen mainScreen].bounds.size.width
 #define ScreenHeight [UIScreen mainScreen].bounds.size.height
@@ -88,7 +89,8 @@
                 NSLog(@"error:%@",error);
             }
             else{
-                EWSItemContentModel *itemContentInfo = allItemArray[1];
+                EWSItemContentModel *itemContentInfo = allItemArray[0];
+                NSLog(@"---content:%@-%@-%@-%@---",itemContentInfo.itemSubject,((EWSMailAccountModel *)itemContentInfo.toRecipientsList[0]).emailAddress,itemContentInfo.dateTimeSentStr,itemContentInfo.size);
                 if (itemContentInfo.hasAttachments) {
                     [[EWSManager sharedEwsManager] getMailAttachmentWithItemContentInfo:itemContentInfo complete:^{
                         NSLog(@"---content:%@-%@-%@-%@-%@--",itemContentInfo.itemSubject,itemContentInfo.itemContentHtmlString,itemContentInfo.dateTimeSentStr,itemContentInfo.size,((EWSMailAttachmentModel *)itemContentInfo.attachmentList[0]).attachmentPath);

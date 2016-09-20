@@ -107,9 +107,10 @@ typedef void (^GetAttachmentCompleteBlock)();
 -(void)mailAttachmentDidEndDocument{
     if (_getAttachmentCompleteBlock) {
         _getAttachmentCompleteBlock();
-        request = nil;
-        parser = nil;
     }
+    request = nil;
+    parser = nil;
+    eData = nil;
 }
 
 @end
