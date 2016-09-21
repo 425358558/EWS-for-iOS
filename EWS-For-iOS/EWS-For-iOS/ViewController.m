@@ -83,25 +83,44 @@
     [[EWSManager sharedEwsManager] setEmailBoxInfoEmailAddress:_eAddressTf.text password:_ePasswordTf.text description:_eDescription.text mailServerAddress:_eServerAddress.text domain:nil];
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//        [self getAllItem];
+        [self getInboxList];
         
-        [[EWSManager sharedEwsManager] getAllItemContent:^(NSArray *allItemArray, NSError *error) {
-            if (error) {
-                NSLog(@"error:%@",error);
-            }
-            else{
-                EWSItemContentModel *itemContentInfo = allItemArray[0];
-                NSLog(@"---content:%@-%@-%@-%@---",itemContentInfo.itemSubject,((EWSMailAccountModel *)itemContentInfo.toRecipientsList[0]).emailAddress,itemContentInfo.dateTimeSentStr,itemContentInfo.size);
-                if (itemContentInfo.hasAttachments) {
-                    [[EWSManager sharedEwsManager] getMailAttachmentWithItemContentInfo:itemContentInfo complete:^{
-                        NSLog(@"---content:%@-%@-%@-%@-%@--",itemContentInfo.itemSubject,itemContentInfo.itemContentHtmlString,itemContentInfo.dateTimeSentStr,itemContentInfo.size,((EWSMailAttachmentModel *)itemContentInfo.attachmentList[0]).attachmentPath);
-                    }];
-                }
-                
-            }
-             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-            allItemArray = nil;
-        }];
     });
+}
+
+-(void)getInboxList{
+    [[EWSManager sharedEwsManager] getInboxListComplete:^(NSArray *inboxList, NSError *error) {
+        if (error) {
+            NSLog(@"error:%@",error);
+        }
+        else{
+            for (EWSInboxListModel *temp in inboxList) {
+                NSLog(@"======%@=%@===",temp.itemId,temp.changeKey);
+            }
+        }
+        
+    }];
+}
+
+-(void)getAllItem{
+    [[EWSManager sharedEwsManager] getAllItemContent:^(NSArray *allItemArray, NSError *error) {
+        if (error) {
+            NSLog(@"error:%@",error);
+        }
+        else{
+            EWSItemContentModel *itemContentInfo = allItemArray[0];
+            NSLog(@"---content:%@-%@-%@-%@---",itemContentInfo.itemSubject,((EWSMailAccountModel *)itemContentInfo.toRecipientsList[0]).emailAddress,itemContentInfo.dateTimeSentStr,itemContentInfo.size);
+            if (itemContentInfo.hasAttachments) {
+                [[EWSManager sharedEwsManager] getMailAllAttachmentWithItemContentInfo:itemContentInfo complete:^{
+                    NSLog(@"---content:%@-%@-%@-%@-%@--",itemContentInfo.itemSubject,itemContentInfo.itemContentHtmlString,itemContentInfo.dateTimeSentStr,itemContentInfo.size,((EWSMailAttachmentModel *)itemContentInfo.attachmentList[0]).attachmentPath);
+                }];
+            }
+            
+        }
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+        allItemArray = nil;
+    }];
 }
 
 - (void)didReceiveMemoryWarning {

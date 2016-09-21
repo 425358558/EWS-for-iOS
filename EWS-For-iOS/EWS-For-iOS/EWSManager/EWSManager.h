@@ -29,6 +29,13 @@
 -(void)setEmailBoxInfoEmailAddress:(NSString *)emailAddress password:(NSString *)password description:(NSString *)description mailServerAddress:(NSString *)mailServerAddress domain:(NSString *)domain;
 
 /**
+ *  获取邮箱列表
+ *
+ *  @param managerGetInboxListBlock 返回EWSInboxListModel数组和错误信息
+ */
+-(void)getInboxListComplete:(void (^)(NSArray *inboxList, NSError *error))managerGetInboxListBlock;
+
+/**
  *  获取所有邮件内容（不包含附件）
  *
  *  @param managerGetAllItemContentBlock 返回邮件EWSItemContentModel数组和错误信息
@@ -49,6 +56,6 @@
  *  @param itemContentInfo                   邮件内容model
  *  @param managerGetAttachmentCompleteBlock 执行完成后的回调，附件存储路径放在itemContentInfo的EWSMailAttachmentModel的attachmentPath里
  */
--(void)getMailAttachmentWithItemContentInfo:(EWSItemContentModel *)itemContentInfo complete:(void (^)())managerGetAttachmentCompleteBlock;
+-(void)getMailAllAttachmentWithItemContentInfo:(EWSItemContentModel *)itemContentInfo complete:(void (^)())managerGetAttachmentCompleteBlock;
 
 @end

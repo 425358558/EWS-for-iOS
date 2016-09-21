@@ -16,6 +16,8 @@ static EWSManager *instance = nil;
 
 typedef void (^ManagerGetAllItemContentBlock)(NSArray *allItemArray, NSError *error);
 typedef void (^ManagerGetItemContentBlock)(EWSItemContentModel *model, NSError *error);
+typedef void (^ManagerGetAllAttachmentCompleteBlock)();
+typedef void (^ManagerGetInboxListBlock)(NSArray *inboxList, NSError *error);
 typedef void (^ManagerGetAttachmentCompleteBlock)();
 
 @implementation EWSManager{
@@ -25,6 +27,8 @@ typedef void (^ManagerGetAttachmentCompleteBlock)();
     
     ManagerGetAllItemContentBlock _managerGetAllItemContentBlock;
     ManagerGetItemContentBlock _managerGetItemContentBlock;
+    ManagerGetAllAttachmentCompleteBlock _managerGetAllAttachmentCompleteBlock;
+    ManagerGetInboxListBlock _managerGetInboxListBlock;
     ManagerGetAttachmentCompleteBlock _managerGetAttachmentCompleteBlock;
 }
 
@@ -73,10 +77,19 @@ typedef void (^ManagerGetAttachmentCompleteBlock)();
     }];
 }
 
--(void)getInboxList{
+-(void)getInboxListComplete:(void (^)(NSArray *inboxList, NSError *error))managerGetInboxListBlock{
+    _managerGetInboxListBlock = managerGetInboxListBlock;
     [[[EWSInboxList alloc] init] getInboxListWithEWSUrl:ewsEmailBoxModel.mailServerAddress finishBlock:^(NSMutableArray *inboxList, NSError *error) {
         if (error) {
-            NSLog(@"error:%@",error);
+            _error = error;
+        }
+        else{
+            _error = nil;
+        }
+        if (_managerGetInboxListBlock) {
+            _managerGetInboxListBlock([inboxList copy],error);
+            [inboxList removeAllObjects];
+            inboxList = nil;
         }
         
     }];
@@ -138,22 +151,26 @@ typedef void (^ManagerGetAttachmentCompleteBlock)();
     }
 }
 
--(void)getMailAttachmentWithItemContentInfo:(EWSItemContentModel *)itemContentInfo complete:(void (^)())managerGetAttachmentCompleteBlock{
-    _managerGetAttachmentCompleteBlock = managerGetAttachmentCompleteBlock;
+-(void)getMailAllAttachmentWithItemContentInfo:(EWSItemContentModel *)itemContentInfo complete:(void (^)())managerGetAllAttachmentCompleteBlock{
+    _managerGetAllAttachmentCompleteBlock = managerGetAllAttachmentCompleteBlock;
     [self getMailAttachmentRecursion:itemContentInfo index:0];
 }
 
 -(void)getMailAttachmentRecursion:(EWSItemContentModel *)itemContentInfo index:(int)i {
     [[[EWSMailAttachment alloc] init] getAttachmentWithEWSUrl:ewsEmailBoxModel.mailServerAddress attachmentInfo:itemContentInfo.attachmentList[i] complete:^{
         if (i==itemContentInfo.attachmentList.count-1) {
-            if (_managerGetAttachmentCompleteBlock) {
-                _managerGetAttachmentCompleteBlock();
+            if (_managerGetAllAttachmentCompleteBlock) {
+                _managerGetAllAttachmentCompleteBlock();
             }
         }
         else{
             [self getMailAttachmentRecursion:itemContentInfo index:i+1];
         }
     }];
+}
+
+-(void)getMailAttachmentWithAttachmentModel:(EWSMailAttachmentModel *)attachmentModel complete:(void (^)())managerGetAttachmentCompleteBlock{
+    _managerGetAttachmentCompleteBlock = managerGetAttachmentCompleteBlock;
 }
 
 @end
