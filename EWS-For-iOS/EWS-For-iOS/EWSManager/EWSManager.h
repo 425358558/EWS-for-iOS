@@ -58,4 +58,12 @@
  */
 -(void)getMailAllAttachmentWithItemContentInfo:(EWSItemContentModel *)itemContentInfo complete:(void (^)())managerGetAttachmentCompleteBlock;
 
+/**
+ *  获取特定附件
+ *
+ *  @param attachmentModel                   附件model
+ *  @param managerGetAttachmentCompleteBlock 完成后的回调
+ */
+-(void)getMailAttachmentWithAttachmentModel:(EWSMailAttachmentModel *)attachmentModel complete:(void (^)())managerGetAttachmentCompleteBlock;
+
 @end

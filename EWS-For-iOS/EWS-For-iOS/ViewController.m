@@ -83,8 +83,8 @@
     [[EWSManager sharedEwsManager] setEmailBoxInfoEmailAddress:_eAddressTf.text password:_ePasswordTf.text description:_eDescription.text mailServerAddress:_eServerAddress.text domain:nil];
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//        [self getAllItem];
-        [self getInboxList];
+        [self getAllItem];
+//        [self getInboxList];
         
     });
 }
@@ -110,10 +110,14 @@
         }
         else{
             EWSItemContentModel *itemContentInfo = allItemArray[0];
-            NSLog(@"---content:%@-%@-%@-%@---",itemContentInfo.itemSubject,((EWSMailAccountModel *)itemContentInfo.toRecipientsList[0]).emailAddress,itemContentInfo.dateTimeSentStr,itemContentInfo.size);
+            NSLog(@"---content:%@-%@-%@-%@-%@--",itemContentInfo.itemSubject,itemContentInfo.itemContentHtmlString,itemContentInfo.dateTimeSentStr,itemContentInfo.size,((EWSMailAttachmentModel *)itemContentInfo.attachmentList[0]).attachmentPath);
             if (itemContentInfo.hasAttachments) {
-                [[EWSManager sharedEwsManager] getMailAllAttachmentWithItemContentInfo:itemContentInfo complete:^{
-                    NSLog(@"---content:%@-%@-%@-%@-%@--",itemContentInfo.itemSubject,itemContentInfo.itemContentHtmlString,itemContentInfo.dateTimeSentStr,itemContentInfo.size,((EWSMailAttachmentModel *)itemContentInfo.attachmentList[0]).attachmentPath);
+//                [[EWSManager sharedEwsManager] getMailAllAttachmentWithItemContentInfo:itemContentInfo complete:^{
+//                    NSLog(@"---content:%@-%@-%@-%@-%@--",itemContentInfo.itemSubject,itemContentInfo.itemContentHtmlString,itemContentInfo.dateTimeSentStr,itemContentInfo.size,((EWSMailAttachmentModel *)itemContentInfo.attachmentList[0]).attachmentPath);
+//                }];
+                EWSMailAttachmentModel *temp = itemContentInfo.attachmentList[0];
+                [[EWSManager sharedEwsManager] getMailAttachmentWithAttachmentModel:temp complete:^{
+                    NSLog(@"-!!!!!--content:%@-%@-%@-%@-%@--",itemContentInfo.itemSubject,itemContentInfo.itemContentHtmlString,itemContentInfo.dateTimeSentStr,itemContentInfo.size,((EWSMailAttachmentModel *)itemContentInfo.attachmentList[0]).attachmentPath);
                 }];
             }
             

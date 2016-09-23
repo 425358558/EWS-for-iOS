@@ -171,6 +171,11 @@ typedef void (^ManagerGetAttachmentCompleteBlock)();
 
 -(void)getMailAttachmentWithAttachmentModel:(EWSMailAttachmentModel *)attachmentModel complete:(void (^)())managerGetAttachmentCompleteBlock{
     _managerGetAttachmentCompleteBlock = managerGetAttachmentCompleteBlock;
+    [[[EWSMailAttachment alloc] init] getAttachmentWithEWSUrl:ewsEmailBoxModel.mailServerAddress attachmentInfo:attachmentModel complete:^{
+        if (_managerGetAttachmentCompleteBlock) {
+            _managerGetAttachmentCompleteBlock();
+        }
+    }];
 }
 
 @end
