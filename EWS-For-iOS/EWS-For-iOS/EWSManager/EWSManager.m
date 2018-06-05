@@ -89,6 +89,7 @@ typedef void (^ManagerGetAttachmentCompleteBlock)();
         if (error) {
             NSLog(@"error:%@",error);
         }
+        NSLog(@"EWSUrl: %@", ewsUrl);
         ewsEmailBoxModel.mailServerAddress = ewsUrl;
     }];
 }

@@ -25,12 +25,18 @@
 #import <Foundation/Foundation.h>
 #import "EWSEmailBoxModel.h"
 
-@interface EWSHttpRequest : NSObject
+typedef void(^HTTPRequestSuccessCompletion)(NSString *redirectLocation, NSData *xmlData);
+typedef void(^HTTPRequestFailureCompletion)(NSError *error);
 
-@property (nonatomic, strong) EWSEmailBoxModel *emailBoxModel;
+@interface EWSHttpRequest : NSObject
 
 -(void)ewsHttpRequest:(NSString *)soapXmlString andUrl:(NSString *)url receiveResponse:(void (^)(NSURLResponse *response))receiveResponseBlock reveiveData:(void (^)(NSData *data))receiveDataBlock finishLoading:(void (^)())finishLoadingBlock error:(void (^)(NSError *error))errorBlock;
 
 -(void)ewsHttpRequest:(NSString *)soapXmlString andUrl:(NSString *)url emailBoxInfo:(EWSEmailBoxModel *)emailBoxInfo receiveResponse:(void (^)(NSURLResponse *response))receiveResponseBlock reveiveData:(void (^)(NSData *data))receiveDataBlock finishLoading:(void (^)())finishLoadingBlock error:(void (^)(NSError *error))errorBlock;
 
+-(void)ewsHttpRequest:(NSString *)soapXmlString
+                  url:(NSString *)url
+         emailBoxInfo:(EWSEmailBoxModel *)emailBoxInfo
+              success:(HTTPRequestSuccessCompletion)success
+              failure:(HTTPRequestFailureCompletion)failure;
 @end
