@@ -27,12 +27,11 @@
 
 typedef void(^HTTPRequestSuccessCompletion)(NSString *redirectLocation, NSData *xmlData);
 typedef void(^HTTPRequestFailureCompletion)(NSError *error);
+typedef void(^HTTPRecieveDataBlock)(NSData *data);
 
 @interface EWSHttpRequest : NSObject
 
--(void)ewsHttpRequest:(NSString *)soapXmlString andUrl:(NSString *)url receiveResponse:(void (^)(NSURLResponse *response))receiveResponseBlock reveiveData:(void (^)(NSData *data))receiveDataBlock finishLoading:(void (^)())finishLoadingBlock error:(void (^)(NSError *error))errorBlock;
-
--(void)ewsHttpRequest:(NSString *)soapXmlString andUrl:(NSString *)url emailBoxInfo:(EWSEmailBoxModel *)emailBoxInfo receiveResponse:(void (^)(NSURLResponse *response))receiveResponseBlock reveiveData:(void (^)(NSData *data))receiveDataBlock finishLoading:(void (^)())finishLoadingBlock error:(void (^)(NSError *error))errorBlock;
+-(void)ewsHttpRequest:(NSString *)soapXmlString andUrl:(NSString *)url emailBoxInfo:(EWSEmailBoxModel *)emailBoxInfo receiveResponse:(void (^)(NSURLResponse *response))receiveResponseBlock finishLoading:(void (^)(NSData *data))finishLoadingBlock error:(void (^)(NSError *error))errorBlock;
 
 -(void)ewsHttpRequest:(NSString *)soapXmlString
                   url:(NSString *)url

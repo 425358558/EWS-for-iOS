@@ -81,16 +81,16 @@ typedef void (^GetInboxListBlock)(NSMutableArray *inboxList, NSError *error);
     "</FindItem>\n"
     "</soap:Body>\n"
     "</soap:Envelope>\n";
-    
-    [request ewsHttpRequest:soapXmlString andUrl:url emailBoxInfo:((EWSManager *)[EWSManager sharedEwsManager]).ewsEmailBoxModel receiveResponse:^(NSURLResponse *response) {
-//        NSLog(@"response:%@",response);
-    } reveiveData:^(NSData *data) {
-        [eData appendData:data];
-    } finishLoading:^{
-//        NSLog(@"data:%@",[[NSString alloc] initWithData:eData encoding:NSUTF8StringEncoding]);
-//        NSLog(@"---inboxList---finish-------");
+
+    [request ewsHttpRequest:soapXmlString url:url emailBoxInfo:((EWSManager *)[EWSManager sharedEwsManager]).ewsEmailBoxModel success:^(NSString *redirectLocation, NSData *xmlData) {
+
+        //        NSLog(@"data:%@",[[NSString alloc] initWithData:xmlData encoding:NSUTF8StringEncoding]);
+        //        NSLog(@"---inboxList---finish-------");
+
+        [eData appendData:xmlData];
         [self requestFinishLoading];
-    } error:^(NSError *error) {
+
+    } failure:^(NSError *error) {
         _error = error;
     }];
 }

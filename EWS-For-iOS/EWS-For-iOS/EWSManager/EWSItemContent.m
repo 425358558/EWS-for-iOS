@@ -25,7 +25,7 @@
 #import "EWSItemContent.h"
 #import "EWSHttpRequest.h"
 #import "EWSXmlParser.h"
-
+#import "EWSManager.h"
 typedef void (^GetItemContentBlock)(EWSItemContentModel *itemContentInfo, NSError *error);
 
 @implementation EWSItemContent{
@@ -86,17 +86,18 @@ typedef void (^GetItemContentBlock)(EWSItemContentModel *itemContentInfo, NSErro
                                "</GetItem>\n"
                                "</soap:Body>\n"
                                "</soap:Envelope>\n",item.itemId,item.changeKey];
-    
-    [request ewsHttpRequest:soapXmlString andUrl:url receiveResponse:^(NSURLResponse *response) {
-//        NSLog(@"response:%@",response);
-    } reveiveData:^(NSData *data) {
-        [eData appendData:data];
-    } finishLoading:^{
-//        NSLog(@"data:%@",[[NSString alloc] initWithData:eData encoding:NSUTF8StringEncoding]);
-//        NSLog(@"----itemContent--finish-------");
+
+    [request ewsHttpRequest:soapXmlString url:url emailBoxInfo:((EWSManager *)[EWSManager sharedEwsManager]).ewsEmailBoxModel success:^(NSString *redirectLocation, NSData *xmlData) {
+
+        //        NSLog(@"----itemContent--finish-------");
+        //        NSLog(@"data:%@",[[NSString alloc] initWithData:eData encoding:NSUTF8StringEncoding]);
+
+        [eData appendData:xmlData];
         [self requestFinishLoading];
-    } error:^(NSError *error) {
+
+    } failure:^(NSError *error) {
         _error = error;
+
     }];
 }
 

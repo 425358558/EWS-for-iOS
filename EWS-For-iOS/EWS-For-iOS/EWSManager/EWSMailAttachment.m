@@ -25,6 +25,7 @@
 #import "EWSMailAttachment.h"
 #import "EWSHttpRequest.h"
 #import "EWSXmlParser.h"
+#import "EWSManager.h"
 
 typedef void (^GetAttachmentCompleteBlock)();
 
@@ -77,16 +78,15 @@ typedef void (^GetAttachmentCompleteBlock)();
                                "</GetAttachment>\n"
                                "</soap:Body>\n"
                                "</soap:Envelope>\n",attachmentInfo.attachmentId];
-    
-    [request ewsHttpRequest:soapXmlString andUrl:url receiveResponse:^(NSURLResponse *response) {
-        NSLog(@"response:%@",response);
-    } reveiveData:^(NSData *data) {
+
+    [request ewsHttpRequest:soapXmlString url:url emailBoxInfo:((EWSManager *)[EWSManager sharedEwsManager]).ewsEmailBoxModel success:^(NSString *redirectLocation, NSData *data) {
+
         [eData appendData:data];
-    } finishLoading:^{
-//        NSLog(@"data:%@",[[NSString alloc] initWithData:eData encoding:NSUTF8StringEncoding]);
+        //        NSLog(@"data:%@",[[NSString alloc] initWithData:eData encoding:NSUTF8StringEncoding]);
         NSLog(@"---attachment---finish-------");
         [self requestFinishLoading];
-    } error:^(NSError *error) {
+
+    } failure:^(NSError *error) {
         NSLog(@"error:%@",error);
     }];
 }

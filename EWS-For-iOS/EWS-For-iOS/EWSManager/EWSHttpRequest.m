@@ -73,22 +73,21 @@
     });
 }
 
-//-(void)ewsHttpRequest:(NSString *)soapXmlString andUrl:(NSString *)url emailBoxInfo:(EWSEmailBoxModel *)emailBoxInfo receiveResponse:(void (^)(NSURLResponse *response))receiveResponseBlock reveiveData:(void (^)(NSData *data))receiveDataBlock finishLoading:(void (^)())finishLoadingBlock error:(void (^)(NSError *error))errorBlock{
-//
-//    self.emailBoxModel = emailBoxInfo;
-//    [self ewsHttpRequest:soapXmlString andUrl:url receiveResponse:receiveResponseBlock reveiveData:receiveDataBlock finishLoading:finishLoadingBlock error:errorBlock];
-//
-//}
-//
-//-(void)ewsHttpRequest:(NSString *)soapXmlString andUrl:(NSString *)url receiveResponse:(void (^)(NSURLResponse *response))receiveResponseBlock reveiveData:(void (^)(NSData *data))receiveDataBlock finishLoading:(void (^)())finishLoadingBlock error:(void (^)(NSError *error))errorBlock{
-//
-//    [self httpRequest:soapXmlString andUrl:url];
-//
-//    _receiveResponseBlock = [receiveResponseBlock copy];
-//    _receiveDataBlock = [receiveDataBlock copy];
-//    _finishLoadingBlock = [finishLoadingBlock copy];
-//    _errorBlock = [errorBlock copy];
-//}
+-(void)ewsHttpRequest:(NSString *)soapXmlString andUrl:(NSString *)url emailBoxInfo:(EWSEmailBoxModel *)emailBoxInfo receiveResponse:(void (^)(NSURLResponse *response))receiveResponseBlock finishLoading:(void (^)(NSData *data))finishLoadingBlock error:(void (^)(NSError *error))errorBlock{
+
+    [self ewsHttpRequest:soapXmlString url:url emailBoxInfo:emailBoxInfo success:^(NSString *redirectLocation, NSData *xmlData) {
+
+        NSString *xmlString = [[NSString alloc] initWithData:xmlData encoding:NSUTF8StringEncoding];
+
+        NSLog(@"xmlString Data: %@", xmlString);
+        finishLoadingBlock(xmlData);
+
+    } failure:^(NSError *error) {
+
+        errorBlock(error);
+    }];
+
+}
 
 #pragma mark - NSURLSession Delegates
 
@@ -110,7 +109,7 @@ completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredentia
     }
     else
     {
-        // URLSession:task:didCompleteWithError delegate would be called as we are cancelling the request, due to wrong credentials.
+        // URLSession:task:didCompleteWithError in case of wrong credentials.
 
         completionHandler(NSURLSessionAuthChallengeCancelAuthenticationChallenge, nil);
     }
@@ -139,7 +138,7 @@ didCompleteWithError:(NSError *)error
 {
     if (error)
     {
-        self.failureBlock ? self.failureBlock(error) : nil; // FIXME: remove this line after shifting all network in queue
+        self.failureBlock ? self.failureBlock(error) : nil;
 
     }
     else
@@ -154,7 +153,7 @@ didCompleteWithError:(NSError *)error
         self.successBlock ? self.successBlock(self.redirectLocation, data) : nil;
     }
 
-    [session finishTasksAndInvalidate]; // We must release the session, else it holds strong referance for it's delegate (in our case EWSHTTPRequest).
+    [session finishTasksAndInvalidate]; // release the session, else it holds strong referance for it's delegate (in our case EWSHTTPRequest).
     // And it wont allow the delegate object to free -> cause memory leak
 }
 
