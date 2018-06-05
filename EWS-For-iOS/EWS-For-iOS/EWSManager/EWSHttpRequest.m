@@ -49,6 +49,7 @@
     NSURL *requestUrl = [NSURL URLWithString:url];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:requestUrl];
     request.HTTPMethod = @"POST";
+    request.timeoutInterval = 20.0;
 
     if (soapXmlString)
     {
