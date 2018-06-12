@@ -100,6 +100,9 @@ typedef void (^GetEWSUrlBlock)(NSString *ewsUrl, NSError *error);
 
     NSString *url = [self popAutoDiscoverUrl];
 
+    NSLog(@"\n\n------------Attempting autodiscovery via url-------------\n\n%@\n\n-", url);
+//    NSLog(@"\n\n------------Credentials-------------\n\n%@\n%@\n-", ebInfo.emailAddress, ebInfo.password);
+
     if (!url)
     {
 
@@ -115,6 +118,8 @@ typedef void (^GetEWSUrlBlock)(NSString *ewsUrl, NSError *error);
     [request ewsHttpRequest:soapXmlString url:url emailBoxInfo:ebInfo success:^(NSString *redirectLocation, NSData *xmlData) {
 
         if (redirectLocation) {
+            NSLog(@"\n\n------------Received Redirection url location-------------\n\n%@\n\n-", redirectLocation);
+
             [weakSelf pushAutoDiscoverUrlList:redirectLocation];
         }
 
@@ -122,6 +127,8 @@ typedef void (^GetEWSUrlBlock)(NSString *ewsUrl, NSError *error);
 
                 if (ewsUrl)
                 {
+                    NSLog(@"\n\n------------Received Autheticated EWS url-------------\n\n%@\n\n-", ewsUrl);
+
                     getEWSUrlBlock(ewsUrl, nil);
 
                 }
@@ -134,7 +141,8 @@ typedef void (^GetEWSUrlBlock)(NSString *ewsUrl, NSError *error);
 
     } failure:^(NSError *error) {
 
-        NSLog(@"error: %@", error); // try next url
+        NSLog(@"error: %@", error);
+        // try next url
         [weakSelf attemptAutoDiscoverForEmailBoxInfo:ebInfo soapXmlString:soapXmlString finishBlock:getEWSUrlBlock];
     }];
 }
