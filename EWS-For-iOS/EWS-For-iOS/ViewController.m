@@ -96,13 +96,21 @@
 -(void)confirmBtnClicked{
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
-    [[EWSManager sharedEwsManager] setEmailBoxInfoEmailAddress:_eAddressTf.text password:_ePasswordTf.text description:_eDescription.text mailServerAddress:_eServerAddress.text domain:nil];
-    
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self getAllItem];
-//        [self getInboxList];
-        
-    });
+    [[EWSManager sharedEwsManager] setEmailBoxInfoEmailAddress:_eAddressTf.text password:_ePasswordTf.text description:_eDescription.text mailServerAddress:_eServerAddress.text domain:nil completion:^(BOOL success) {
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+
+            if (success) {
+
+                [self getAllItem];
+                //        [self getInboxList];
+            }
+            else {
+                NSLog(@"Something went wrong...May be EWS url was not discovered");
+            }
+        });
+
+    }];
 }
 
 -(void)getInboxList{

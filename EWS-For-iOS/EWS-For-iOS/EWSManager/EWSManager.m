@@ -67,7 +67,12 @@ typedef void (^ManagerGetAttachmentCompleteBlock)();
     return instance;
 }
 
--(void)setEmailBoxInfoEmailAddress:(NSString *)emailAddress password:(NSString *)password description:(NSString *)description mailServerAddress:(NSString *)mailServerAddress domain:(NSString *)domain{
+-(void)setEmailBoxInfoEmailAddress:(NSString *)emailAddress
+                          password:(NSString *)password
+                       description:(NSString *)description
+                 mailServerAddress:(NSString *)mailServerAddress
+                            domain:(NSString *)domain
+                        completion:(void(^)(BOOL success))completion {
     ewsEmailBoxModel = [[EWSEmailBoxModel alloc] init];
     ewsEmailBoxModel.emailAddress = emailAddress;
     ewsEmailBoxModel.password = password;
@@ -77,19 +82,25 @@ typedef void (^ManagerGetAttachmentCompleteBlock)();
     
     if (!(ewsEmailBoxModel.emailAddress&&ewsEmailBoxModel.password)) {
         NSLog(@"emailAddress and password can't be nil");
+        completion(false);
     }
     else if (!ewsEmailBoxModel.mailServerAddress||[ewsEmailBoxModel.mailServerAddress isEqualToString:@""]) {
-        [self autodiscover];
+        [self autodiscoverWithCompletion:completion];
     }
     
 }
 
--(void)autodiscover{
+-(void)autodiscoverWithCompletion:(void(^)(BOOL success))completion {
+
     [[[EWSAutodiscover alloc] init] autoDiscoverWithEmailAddress:ewsEmailBoxModel.emailAddress finishBlock:^(NSString *ewsUrl, NSError *error) {
         if (error) {
             NSLog(@"error:%@",error);
+            completion(false);
+            return;
         }
+        NSLog(@"EWSUrl: %@", ewsUrl);
         ewsEmailBoxModel.mailServerAddress = ewsUrl;
+        completion(true);
     }];
 }
 

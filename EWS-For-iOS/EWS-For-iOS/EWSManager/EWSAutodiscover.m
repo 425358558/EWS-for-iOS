@@ -30,16 +30,11 @@
 typedef void (^GetEWSUrlBlock)(NSString *ewsUrl, NSError *error);
 
 @implementation EWSAutodiscover{
-    EWSHttpRequest *request;
-    EWSXmlParser *parser;
-    
-    NSMutableArray *autodiscoverAddressList;
-    NSMutableData *eData;
-    
-    GetEWSUrlBlock _getEWSUrlBlock;
-    
+     NSMutableArray *autodiscoverAddressList;
+
     NSString *currentElement;
     NSString *ewsUrl;
+
     NSError *_error;
 }
 
@@ -54,10 +49,7 @@ typedef void (^GetEWSUrlBlock)(NSString *ewsUrl, NSError *error);
 }
 
 -(void)initData{
-    request = [[EWSHttpRequest alloc] init];
     autodiscoverAddressList = [[NSMutableArray alloc] init];
-    eData = [[NSMutableData alloc] init];
-    parser = [[EWSXmlParser alloc] init];
 }
 
 -(void)setAutodiscoverAddressList:(NSString *)emailAddress{
@@ -66,15 +58,28 @@ typedef void (^GetEWSUrlBlock)(NSString *ewsUrl, NSError *error);
         [autodiscoverAddressList addObject:[NSString stringWithFormat:@"https://autodiscover.%@/autodiscover/autodiscover.xml",[address objectAtIndex:1]]];
         [autodiscoverAddressList addObject:[NSString stringWithFormat:@"https://%@/autodiscover/autodiscover.xml",[address objectAtIndex:1]]];
         [autodiscoverAddressList addObject:[NSString stringWithFormat:@"https://email.%@/autodiscover/autodiscover.xml",[address objectAtIndex:1]]];
+
     }
     else{
         NSLog(@"error:Could not find emailAddress!");
     }
 }
 
+- (void)pushAutoDiscoverUrlList:(NSString *)url{
+    [autodiscoverAddressList addObject:url];
+}
+
+- (NSString *)popAutoDiscoverUrl{
+
+    NSString *url = autodiscoverAddressList.lastObject;
+
+    [autodiscoverAddressList removeLastObject];
+
+    return url;
+}
+
 -(void)autoDiscoverWithEmailAddress:(NSString *)emailAddress finishBlock:(void(^)(NSString *ewsUrl, NSError *error))getEWSUrlBlock{
-    _getEWSUrlBlock = [getEWSUrlBlock copy];
-    
+
     NSString *soapXmlString = [NSString stringWithFormat:
                                @"<Autodiscover xmlns=\"http://schemas.microsoft.com/exchange/autodiscover/outlook/requestschema/2006\">\n"
                                "<Request>\n"
@@ -86,53 +91,83 @@ typedef void (^GetEWSUrlBlock)(NSString *ewsUrl, NSError *error);
     [self setAutodiscoverAddressList:emailAddress];
     
     EWSEmailBoxModel *ebInfo = ((EWSManager *)[EWSManager sharedEwsManager]).ewsEmailBoxModel;
-    
-    for (NSString *url in autodiscoverAddressList) {
-        [request ewsHttpRequest:soapXmlString andUrl:url emailBoxInfo:ebInfo receiveResponse:^(NSURLResponse *response) {
-//            NSLog(@"response:%@",response);
-        } reveiveData:^(NSData *data) {
-            [eData appendData:data];
-        } finishLoading:^{
-//            NSLog(@"data:%@",[[NSString alloc] initWithData:eData encoding:NSUTF8StringEncoding]);
-            [self requestFinishLoading];
-        } error:^(NSError *error) {
-            _error = error;
-        }];
-    }
+
+    [self attemptAutoDiscoverForEmailBoxInfo:ebInfo soapXmlString:soapXmlString finishBlock:getEWSUrlBlock];
+
 }
 
--(void)requestFinishLoading{
-    [parser parserWithData:eData didStartDocument:^{
+- (void)attemptAutoDiscoverForEmailBoxInfo:(EWSEmailBoxModel *)ebInfo soapXmlString:(NSString *)soapXmlString finishBlock:(void(^)(NSString *ewsUrl, NSError *error))getEWSUrlBlock {
+
+    NSString *url = [self popAutoDiscoverUrl];
+
+    if (!url)
+    {
+
+        getEWSUrlBlock(nil, [[NSError alloc] initWithDomain:@"EWS.autodiscovery.url" code:-1 userInfo:nil]);
+
+        return;
+    }
+
+    __weak EWSAutodiscover *weakSelf = self;
+
+    EWSHttpRequest *request = [[EWSHttpRequest alloc] init];
+
+    [request ewsHttpRequest:soapXmlString url:url emailBoxInfo:ebInfo success:^(NSString *redirectLocation, NSData *xmlData) {
+
+        if (redirectLocation) {
+            [weakSelf pushAutoDiscoverUrlList:redirectLocation];
+        }
+
+        [self checkForEWSUrlInReceivedData:xmlData withCompletionHandler:^(NSString *ewsUrl) {
+
+                if (ewsUrl)
+                {
+                    getEWSUrlBlock(ewsUrl, nil);
+
+                }
+                else
+                {
+                    // try next url
+                    [weakSelf attemptAutoDiscoverForEmailBoxInfo:ebInfo soapXmlString:soapXmlString finishBlock:getEWSUrlBlock];
+                }
+            }];
+
+    } failure:^(NSError *error) {
+
+        NSLog(@"error: %@", error); // try next url
+        [weakSelf attemptAutoDiscoverForEmailBoxInfo:ebInfo soapXmlString:soapXmlString finishBlock:getEWSUrlBlock];
+    }];
+}
+
+-(void)checkForEWSUrlInReceivedData:(NSData *)data withCompletionHandler:(void(^)(NSString* ewsUrl))completion {
+
+    if (!data.bytes)
+    {
+        completion(nil);
+
+        return;
+    }
+
+    EWSXmlParser * parser = [[EWSXmlParser alloc] init];
+
+    [parser parserWithData:data didStartDocument:^{
         
     } didStartElementBlock:^(NSString *elementName, NSString *namespaceURI, NSString *qName, NSDictionary *attributeDict) {
         currentElement = elementName;
         
     } foundCharacters:^(NSString *string) {
-        
-        [self autodiscoverFoundCharacters:string];
+
+        if ([currentElement isEqualToString:@"EwsUrl"]) {
+            ewsUrl = [NSString stringWithString:string];
+        }
+
     } didEndElementBlock:^(NSString *elementName, NSString *namespaceURI, NSString *qName) {
         
         currentElement = nil;
     } didEndDocument:^{
-        
-        [self autodiscoverDidEndDocument];
+
+        ewsUrl ? completion(ewsUrl) : completion(nil);
     }];
-}
-
--(void)autodiscoverFoundCharacters:(NSString *)string{
-    if ([currentElement isEqualToString:@"EwsUrl"] && !ewsUrl) {
-        ewsUrl = [NSString stringWithString:string];
-    }
-}
-
--(void)autodiscoverDidEndDocument{
-    if (_getEWSUrlBlock) {
-        _getEWSUrlBlock(ewsUrl, _error);
-    }
-    request = nil;
-    parser = nil;
-    eData = nil;
-    autodiscoverAddressList = nil;
 }
 
 @end

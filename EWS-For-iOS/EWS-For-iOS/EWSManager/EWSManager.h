@@ -41,8 +41,14 @@
  *  @param description       邮箱描述
  *  @param mailServerAddress 邮箱服务器地址（如果没有设置就会用autodiscover去尝试寻找）
  *  @param domain            域
+ *  @param completion        completionHandles, returns true, if everything went well
  */
--(void)setEmailBoxInfoEmailAddress:(NSString *)emailAddress password:(NSString *)password description:(NSString *)description mailServerAddress:(NSString *)mailServerAddress domain:(NSString *)domain;
+-(void)setEmailBoxInfoEmailAddress:(NSString *)emailAddress
+                          password:(NSString *)password
+                       description:(NSString *)description
+                 mailServerAddress:(NSString *)mailServerAddress
+                            domain:(NSString *)domain
+                        completion:(void(^)(BOOL success))completion;
 
 /**
  *  获取邮箱列表
