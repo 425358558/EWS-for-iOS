@@ -78,7 +78,7 @@
     
     [self.view addSubview:({
         _eServerAddress = [[UITextField alloc] initWithFrame:CGRectMake(20, 230, ScreenWidth-40, 30)];
-        _eServerAddress.placeholder = @"邮箱服务器地址（选填）";
+        _eServerAddress.placeholder = @"邮箱服务器地址（选填）Mail server address (Optional)";
         _eServerAddress.delegate = self;
         _eServerAddress;
     })];
