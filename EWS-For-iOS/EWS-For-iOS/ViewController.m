@@ -33,7 +33,7 @@
 #define ScreenHeight [UIScreen mainScreen].bounds.size.height
 
 @interface ViewController ()
-
+@property(nonatomic) UIActivityIndicatorView *spinner;
 @end
 
 @implementation ViewController{
@@ -47,8 +47,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    self.view.backgroundColor = [UIColor colorWithRed:0.3 green:0.3 blue:0.5 alpha:1.0];
-    
+    self.view.backgroundColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:1.0];
+
     [self initUI];
     
 }
@@ -57,14 +57,14 @@
     
     [self.view addSubview:({
         _eAddressTf = [[UITextField alloc] initWithFrame:CGRectMake(20, 80, ScreenWidth-40, 30)];
-        _eAddressTf.placeholder = @"邮箱（必填）";
+        _eAddressTf.placeholder = @"邮箱（必填）(Enter Email address)";
         _eAddressTf.delegate = self;
         _eAddressTf;
     })];
     
     [self.view addSubview:({
         _ePasswordTf = [[UITextField alloc] initWithFrame:CGRectMake(20, 130, ScreenWidth-40, 30)];
-        _ePasswordTf.placeholder = @"密码（必填）";
+        _ePasswordTf.placeholder = @"密码（必填）(Enter password)";
         _ePasswordTf.delegate = self;
         _ePasswordTf;
     })];
@@ -78,7 +78,7 @@
     
     [self.view addSubview:({
         _eServerAddress = [[UITextField alloc] initWithFrame:CGRectMake(20, 230, ScreenWidth-40, 30)];
-        _eServerAddress.placeholder = @"邮箱服务器地址（选填）";
+        _eServerAddress.placeholder = @"邮箱服务器地址（选填）Mail server address (Optional)";
         _eServerAddress.delegate = self;
         _eServerAddress;
     })];
@@ -90,12 +90,19 @@
         [_eConfirmBtn setTitle:@"确认" forState:UIControlStateNormal];
         _eConfirmBtn;
     })];
-    
+
+    self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+
+    self.spinner.center = self.view.center;
+
+    [self.view addSubview:self.spinner];
+
 }
 
 -(void)confirmBtnClicked{
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-    
+
+    [self.spinner startAnimating];
+
     [[EWSManager sharedEwsManager] setEmailBoxInfoEmailAddress:_eAddressTf.text password:_ePasswordTf.text description:_eDescription.text mailServerAddress:_eServerAddress.text domain:nil completion:^(BOOL success) {
 
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -106,6 +113,8 @@
                 //        [self getInboxList];
             }
             else {
+                [self.spinner stopAnimating];
+
                 NSLog(@"Something went wrong...May be EWS url was not discovered");
             }
         });
@@ -128,14 +137,36 @@
 }
 
 -(void)getAllItem{
+    NSLog(@"\n\n------------Attempting To fetch emails -------------\n\n-");
+
     [[EWSManager sharedEwsManager] getAllItemContent:^(NSArray *allItemArray, NSError *error) {
         if (error) {
+            [self.spinner stopAnimating];
+
             NSLog(@"error:%@",error);
         }
         else{
+
+            dispatch_async(dispatch_get_main_queue(), ^{
+
+                [self.spinner stopAnimating];
+
+            });
+
+            NSLog(@"\n\n------------ Email fetched successfully, Now printing content of first email received-------------\n\n-");
+
             EWSItemContentModel *itemContentInfo = allItemArray[0];
-            NSLog(@"---content:%@-%@-%@-%@-%@--",itemContentInfo.itemSubject,itemContentInfo.itemContentHtmlString,itemContentInfo.dateTimeSentStr,itemContentInfo.size,((EWSMailAttachmentModel *)itemContentInfo.attachmentList[0]).attachmentPath);
+
+            NSLog(@"\n\n------------ First Email fetched Subject-------------\n\n%@\n\n-", itemContentInfo.itemSubject);
+            NSLog(@"\n\n------------ First Email HTML Body-------------\n\n%@\n\n-", itemContentInfo.itemContentHtmlString);
+            NSLog(@"\n\n------------ First Email Received date-------------\n\n%@\n\n-", itemContentInfo.dateTimeSentStr);
+
+            NSLog(@"\n\n------------ Email Content Size-------------\n\n%@\n\n-", itemContentInfo.size);
+
             if (itemContentInfo.hasAttachments) {
+
+                NSLog(@"\n\n------------ Email Has Attachment at path -------------\n\n%@-", ((EWSMailAttachmentModel *)itemContentInfo.attachmentList[0]).attachmentPath);
+
 //                [[EWSManager sharedEwsManager] getMailAllAttachmentWithItemContentInfo:itemContentInfo complete:^{
 //                    NSLog(@"---content:%@-%@-%@-%@-%@--",itemContentInfo.itemSubject,itemContentInfo.itemContentHtmlString,itemContentInfo.dateTimeSentStr,itemContentInfo.size,((EWSMailAttachmentModel *)itemContentInfo.attachmentList[0]).attachmentPath);
 //                }];
@@ -146,7 +177,6 @@
             }
             
         }
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
         allItemArray = nil;
     }];
 }
