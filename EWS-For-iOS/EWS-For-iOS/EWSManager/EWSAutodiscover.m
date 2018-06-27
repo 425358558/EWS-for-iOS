@@ -58,6 +58,7 @@ typedef void (^GetEWSUrlBlock)(NSString *ewsUrl, NSError *error);
         [autodiscoverAddressList addObject:[NSString stringWithFormat:@"https://autodiscover.%@/autodiscover/autodiscover.xml",[address objectAtIndex:1]]];
         [autodiscoverAddressList addObject:[NSString stringWithFormat:@"https://%@/autodiscover/autodiscover.xml",[address objectAtIndex:1]]];
         [autodiscoverAddressList addObject:[NSString stringWithFormat:@"https://email.%@/autodiscover/autodiscover.xml",[address objectAtIndex:1]]];
+        [autodiscoverAddressList addObject:[NSString stringWithFormat:@"http://autodiscover.%@/autodiscover/autodiscover.xml", [address objectAtIndex:1]]];
 
     }
     else{
